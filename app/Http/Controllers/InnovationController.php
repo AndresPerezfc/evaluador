@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Innovation;
 
 class InnovationController extends Controller
 {
@@ -11,7 +12,8 @@ class InnovationController extends Controller
      */
     public function index()
     {
-        //
+        $innovations = Innovation::orderBy('id', 'desc')->paginate(10);
+        return view('innovations.index', compact('innovations'));
     }
 
     /**
