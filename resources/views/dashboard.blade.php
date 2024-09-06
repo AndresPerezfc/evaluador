@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">           
-                En este lugar podras evaluar las innovaciones de Innovafest B10
+                Escoge entre las tres categorías
 
                 <a href="{{ route('innovations.index') }}">Ver las innovaciones</a>
             </div>
