@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('critorios', function (Blueprint $table) {
+        Schema::create('criterios', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
+            $table->string('descripción');
+            $table->integer('puntaje_maximo');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('critorios');
+        Schema::dropIfExists('criterios');
     }
 };
