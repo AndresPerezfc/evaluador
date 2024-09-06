@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InnovationController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -15,3 +16,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+
+// Define la ruta resource para InnovationController
+Route::resource('innovations', InnovationController::class);
