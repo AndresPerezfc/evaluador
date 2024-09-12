@@ -29,13 +29,13 @@
     isOpen: false
 }":class="{'overflow-hidden': open}" class="sm:overflow-auto">
 
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
                     <button x-on:click="open = !open" data-drawer-target="logo-sidebar"
                         data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
-                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +47,7 @@
                     <a href="https://flowbite.com" class="flex ms-2 md:me-24">
                         <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
                         <span
-                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite</span>
+                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
                     </a>
                 </div>
                 <div class="flex items-center">
@@ -147,13 +147,13 @@
     @endphp
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 "
         :class="{
             'transform-none': open,
             '-translate-x-full': !open,
         }"
         aria-label="Sidebar">
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800 mt-16">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
             <ul class="space-y-2 font-medium">
 
                 @foreach ($links as $link)
@@ -167,7 +167,7 @@
                             @isset($link['submenu'])
                                 <div x-data="{ open: {{ $link['active'] ? 'true' : 'false' }} }">
                                     <button
-                                        class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $link['active'] ? 'bg-gray-900' : '' }}"
+                                        class="flex items-center w-full p-2 text-gray-900 rounded-lg group {{ $link['active'] ? 'bg-gray-100' : '' }}"
                                         x-on:click="open = !open">
                                         <span class="inline-flex w-6 h-6 justify-center items-center">
                                             <i class="{{ $link['icon'] }} text-gray-500"></i>
@@ -187,7 +187,7 @@
                                         @foreach ($link['submenu'] as $item)
                                             <li class="pl-4">
                                                 <a href="{{ $item['route'] }}"
-                                                    class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $item['active'] ? 'bg-gray-900' : '' }}">
+                                                    class="flex items-center w-full p-2 text-gray-900 rounded-lg  group {{ $item['active'] ? 'bg-gray-100' : '' }}">
 
                                                     <span class="inline-flex w-6 h-6 justify-center items-center">
                                                         <i class="{{ $item['icon'] }} text-gray-500"></i>
@@ -201,7 +201,7 @@
                                 </div>
                             @else
                                 <a href="{{ $link['route'] }}"
-                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $link['active'] ? 'bg-gray-900' : '' }}">
+                                    class="flex items-center p-2 text-gray-900 rounded-lg  group {{ $link['active'] ? 'bg-gray-100' : '' }}">
                                     <span class="inline-flex w-6 h-6 justify-center items-center">
                                         <i class="{{ $link['icon'] }} text-gray-500"></i>
                                     </span>
@@ -216,101 +216,54 @@
     </aside>
 
 
+    
+
     <div class="p-4 sm:ml-64">
-
         <div class="mt-14">
-
-
-            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-
+            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    Título
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
-                                        Autor
-                                        <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                            </svg></a>
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
-                                        Rol autor
-                                        <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                            </svg></a>
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
-                                        Enlace
-                                        <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                            </svg></a>
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
-                                        Puntaje
-                                        <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                            </svg></a>
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <span class="sr-only">Edit</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($innovations as $innovation)
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th scope="row"
-                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $innovation->titulo }}
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        {{ $innovation->innovador }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ $innovation->rol_autor }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <a target="_blank" href=" {{ $innovation->url }}">link</a>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{$innovation->puntaje}}
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <a href="{{route('innovations.edit', $innovation->id)}}">Evaluar</a>
-                                    </td>
 
-                                </tr>
-                            @endforeach
-                        </tbody>
 
-                    </table>
+                    {{-- Contenido --}}
+
+                    <h1>Evaluar Innovación: {{ $innovation->name }}</h1>
+
+    <form action="{{ route('innovations.update', $innovation->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div>
+            <label for="criterio1">Criterio 1 (40 puntos):</label>
+            <input type="number" name="criterio1" id="criterio1" min="0" max="40" required>
+        </div>
+
+        <div>
+            <label for="criterio2">Criterio 2 (20 puntos):</label>
+            <input type="number" name="criterio2" id="criterio2" min="0" max="20" required>
+        </div>
+
+        <div>
+            <label for="criterio3">Criterio 3 (20 puntos):</label>
+            <input type="number" name="criterio3" id="criterio3" min="0" max="20" required>
+        </div>
+
+        <div>
+            <label for="criterio4">Criterio 4 (10 puntos):</label>
+            <input type="number" name="criterio4" id="criterio4" min="0" max="10" required>
+        </div>
+
+        <div>
+            <label for="criterio5">Criterio 5 (10 puntos):</label>
+            <input type="number" name="criterio5" id="criterio5" min="0" max="10" required>
+        </div>
+
+        <button type="submit">Guardar Evaluación</button>
+    </form>
+                        
+                    {{-- Contenido --}}
+
 
                 </div>
-
-
             </div>
         </div>
     </div>

@@ -43,9 +43,10 @@ class InnovationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Innovation $innovation)
     {
-        //
+            return view('innovations.edit', compact('innovation'));
+    
     }
 
     /**
@@ -53,7 +54,29 @@ class InnovationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        {
+            // Validar los puntajes
+            $request->validate([
+                'criterio1' => 'required|integer|min:0|max:40',
+                'criterio2' => 'required|integer|min:0|max:20',
+                'criterio3' => 'required|integer|min:0|max:20',
+                'criterio4' => 'required|integer|min:0|max:10',
+                'criterio5' => 'required|integer|min:0|max:10',
+            ]);
+    
+            // Obtener la innovación que se va a evaluar
+            $innovation = Innovation::findOrFail($id);
+    
+            // Calcular el puntaje total basado en los puntajes de los criterios
+            $totalPuntaje = $request->criterio1 + $request->criterio2 + $request->criterio3 + $request->criterio4 + $request->criterio5;
+    
+            // Guardar el puntaje total en la innovación
+            $innovation->puntaje = $totalPuntaje;
+            $innovation->save();
+    
+            // Redirigir de vuelta con un mensaje de éxito
+            return redirect()->route('innovations.index')->with('success', 'Innovación evaluada exitosamente con un puntaje total de ' . $totalPuntaje);
+        }
     }
 
     /**
