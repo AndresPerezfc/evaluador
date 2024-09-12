@@ -29,13 +29,13 @@
     isOpen: false
 }":class="{'overflow-hidden': open}" class="sm:overflow-auto">
 
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
                     <button x-on:click="open = !open" data-drawer-target="logo-sidebar"
                         data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
-                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +47,7 @@
                     <a href="https://flowbite.com" class="flex ms-2 md:me-24">
                         <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
                         <span
-                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite</span>
+                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
                     </a>
                 </div>
                 <div class="flex items-center">
@@ -147,13 +147,13 @@
     @endphp
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 "
         :class="{
             'transform-none': open,
             '-translate-x-full': !open,
         }"
         aria-label="Sidebar">
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
             <ul class="space-y-2 font-medium">
 
                 @foreach ($links as $link)
@@ -167,7 +167,7 @@
                             @isset($link['submenu'])
                                 <div x-data="{ open: {{ $link['active'] ? 'true' : 'false' }} }">
                                     <button
-                                        class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $link['active'] ? 'bg-gray-900' : '' }}"
+                                        class="flex items-center w-full p-2 text-gray-900 rounded-lg group {{ $link['active'] ? 'bg-gray-100' : '' }}"
                                         x-on:click="open = !open">
                                         <span class="inline-flex w-6 h-6 justify-center items-center">
                                             <i class="{{ $link['icon'] }} text-gray-500"></i>
@@ -187,7 +187,7 @@
                                         @foreach ($link['submenu'] as $item)
                                             <li class="pl-4">
                                                 <a href="{{ $item['route'] }}"
-                                                    class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $item['active'] ? 'bg-gray-900' : '' }}">
+                                                    class="flex items-center w-full p-2 text-gray-900 rounded-lg  group {{ $item['active'] ? 'bg-gray-100' : '' }}">
 
                                                     <span class="inline-flex w-6 h-6 justify-center items-center">
                                                         <i class="{{ $item['icon'] }} text-gray-500"></i>
@@ -201,7 +201,7 @@
                                 </div>
                             @else
                                 <a href="{{ $link['route'] }}"
-                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $link['active'] ? 'bg-gray-900' : '' }}">
+                                    class="flex items-center p-2 text-gray-900 rounded-lg  group {{ $link['active'] ? 'bg-gray-100' : '' }}">
                                     <span class="inline-flex w-6 h-6 justify-center items-center">
                                         <i class="{{ $link['icon'] }} text-gray-500"></i>
                                     </span>
@@ -220,7 +220,7 @@
 
     <div class="p-4 sm:ml-64">
         <div class="mt-14">
-            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
 
