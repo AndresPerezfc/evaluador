@@ -233,19 +233,16 @@
         @method('PUT')
 
         <h3>Criterios de Evaluación</h3>
-        <ul>
-            @forelse ($criterios as $criterio)
-                <li>
-                    <strong>{{ $criterio->name }}</strong> - {{ $criterio->description }}
-                    <!-- Aquí podrías agregar inputs si necesitas que el evaluador puntúe los criterios -->
-                    <input type="number" name="criterios[{{ $criterio->id }}]" placeholder="Puntaje" max="{{ $criterio->score }}">
-                </li>
-            @empty
-                <li>No hay criterios disponibles para esta categoría.</li>
-            @endforelse
-        </ul>
+        @foreach ($criterios as $criterio)
+        <div>
+            <label for="criterio-{{ $criterio->id }}">{{ $criterio->nombre }} (Peso: {{ $criterio->score }})</label>
+            <input type="hidden" name="criterios[{{ $loop->index }}][id]" value="10">
+            <input type="number" name="criterios[{{ $loop->index }}][puntaje]" min="0" max="{{ $criterio->score }}" required>
+            <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario"></textarea>
+        </div>
+    @endforeach
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit">Guardar Evaluación</button>
     </form>
                         
                     {{-- Contenido --}}

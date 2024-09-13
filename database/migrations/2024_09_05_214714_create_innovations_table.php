@@ -25,14 +25,15 @@ return new class extends Migration
             $table->string('email');
             $table->string('perfil_instagram')->nullable();;
             $table->string('telefono');
-            $table->string('vinculacion')->nullable();;
-            $table->string('dependencia')->nullable();;
-            $table->string('dependencia_aliada')->nullable();;
-            $table->string('facultad')->nullable();;
-            $table->string('programa')->nullable();;
-            $table->string('colegio')->nullable();;
-            $table->string('coautor')->nullable();;
+            $table->string('vinculacion')->nullable();
+            $table->string('dependencia')->nullable();
+            $table->string('dependencia_aliada')->nullable();
+            $table->string('facultad')->nullable();
+            $table->string('programa')->nullable();
+            $table->string('colegio')->nullable();
+            $table->string('coautor')->nullable();
             $table->foreignId('category_id')->constrained('categories');
+            $table->double('puntaje')->nullable();
             $table->timestamps();
         });
     }

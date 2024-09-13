@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Innovation;
+use App\Models\Evaluation;
+use App\Models\Criterio;
+use Auth;
 
 class InnovationController extends Controller
 {
@@ -54,30 +57,46 @@ class InnovationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Innovation $innovation)
     {
         {
-            // Validar los puntajes
-            $request->validate([
-                'criterio1' => 'required|integer|min:0|max:40',
-                'criterio2' => 'required|integer|min:0|max:20',
-                'criterio3' => 'required|integer|min:0|max:20',
-                'criterio4' => 'required|integer|min:0|max:10',
-                'criterio5' => 'required|integer|min:0|max:10',
-            ]);
-    
-            // Obtener la innovación que se va a evaluar
-            $innovation = Innovation::findOrFail($id);
-    
-            // Calcular el puntaje total basado en los puntajes de los criterios
-            $totalPuntaje = $request->criterio1 + $request->criterio2 + $request->criterio3 + $request->criterio4 + $request->criterio5;
-            $totalPuntaje = ($totalPuntaje / 3);
-            // Guardar el puntaje total en la innovación
-            $innovation->puntaje = $totalPuntaje;
-            $innovation->save();
-    
-            // Redirigir de vuelta con un mensaje de éxito
-            return redirect()->route('innovations.index')->with('success', 'Innovación evaluada exitosamente con un puntaje total de ' . $totalPuntaje);
+             // Validar los datos de la solicitud
+    $validated = $request->validate([
+        'criterios.*.id' => 'required|exists:criterios,id',
+        'criterios.*.puntaje' => 'required|integer|min:0', // Valida que sea un número entero positivo
+        'criterios.*.comentario' => 'nullable|string',
+    ]);
+
+    // Inicializar la suma total de puntajes
+    $totalPuntaje = 0;
+
+    // Iterar sobre los criterios enviados en la solicitud
+    foreach ($validated['criterios'] as $criterioData) {
+        // Obtener el criterio para acceder a su puntaje (score)
+        $criterio = Criterio::find($criterioData['id']);
+
+        // Obtener o crear la evaluación del usuario para este criterio y la innovación
+        $evaluation = Evaluation::updateOrCreate(
+            [
+                'user_id' => 1,
+                'innovation_id' => $innovation->id,
+                'criterio_id' => $criterio->id,
+            ],
+            [
+                'puntaje' => $criterioData['puntaje'],
+                'comentario' => $criterioData['comentario'] ?? null,
+            ]
+        );
+
+        // Sumar el puntaje ponderado al total usando el score del criterio
+        $totalPuntaje += $criterioData['puntaje'] * $criterio->score / 100;
+    } 
+
+    // Actualizar el puntaje total de la innovación
+    $innovation->puntaje = $totalPuntaje;
+    $innovation->save();
+
+    return redirect()->route('innovations.index');
         }
     }
 
