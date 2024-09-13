@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('criterios', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('descripción');
-            $table->integer('puntaje_maximo');
+            $table->string('name');
+            $table->string('description');
+            $table->integer('score');
+            $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
         });
     }
