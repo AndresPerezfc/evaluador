@@ -18,4 +18,9 @@ class Criterio extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function evaluation()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
 }
