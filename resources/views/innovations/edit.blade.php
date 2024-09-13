@@ -46,8 +46,7 @@
                     </button>
                     <a href="https://flowbite.com" class="flex ms-2 md:me-24">
                         <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
-                        <span
-                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
+                        <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
                     </a>
                 </div>
                 <div class="flex items-center">
@@ -216,7 +215,7 @@
     </aside>
 
 
-    
+
 
     <div class="p-4 sm:ml-64">
         <div class="mt-14">
@@ -228,23 +227,32 @@
 
                     <h1>Evaluar Innovación: {{ $innovation->titulo }}</h1>
 
-    <form action="{{ route('innovations.update', $innovation->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+                    <form action="{{ route('innovations.update', $innovation->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-        <h3>Criterios de Evaluación</h3>
-        @foreach ($criterios as $criterio)
-        <div>
-            <label for="criterio-{{ $criterio->id }}">{{ $criterio->nombre }} (Peso: {{ $criterio->score }})</label>
-            <input type="hidden" name="criterios[{{ $loop->index }}][id]" value="10">
-            <input type="number" name="criterios[{{ $loop->index }}][puntaje]" min="0" max="{{ $criterio->score }}" required>
-            <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario"></textarea>
-        </div>
-    @endforeach
+                        <h3>Criterios de Evaluación</h3>
+                        @foreach ($criterios as $criterio)
+                            @php
+                                // Obtener la evaluación anterior para este criterio, si existe
+                                $evaluacion = $evaluaciones->get($criterio->id);
+                            @endphp
+                            <div>
+                                <label for="criterio-{{ $criterio->id }}">{{ $criterio->name }} (Peso:
+                                    {{ $criterio->score }})</label>
+                                <input type="hidden" name="criterios[{{ $loop->index }}][id]"
+                                    value="{{ $criterio->id }}">
 
-    <button type="submit">Guardar Evaluación</button>
-    </form>
-                        
+                                <input type="number" name="criterios[{{ $loop->index }}][puntaje]" min="0"
+                                    max="{{ $criterio->score }}" value="{{ $evaluacion->puntaje ?? '' }}" required>
+
+                                <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario">{{ $evaluacion->comentario ?? '' }}</textarea> <!-- Comentario anterior -->
+                            </div>
+                        @endforeach
+
+                        <button type="submit">Guardar Evaluación</button>
+                    </form>
+
                     {{-- Contenido --}}
 
 

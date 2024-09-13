@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Innovation;
 use App\Models\Evaluation;
 use App\Models\Criterio;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class InnovationController extends Controller
 {
@@ -49,9 +49,16 @@ class InnovationController extends Controller
     public function edit(Innovation $innovation)
     {
 
-        $criterios = $innovation->category->criterios;
-            return view('innovations.edit', compact('innovation', 'criterios'));
-    
+        // Obtener los criterios asociados a la categoría de la innovación
+        $criterios = Criterio::where('category_id', $innovation->category_id)->get();
+
+        // Obtener las evaluaciones anteriores hechas por el usuario para esta innovación
+        $evaluaciones = Evaluation::where('innovation_id', $innovation->id)
+            ->where('user_id', Auth::user()->id)
+            ->get()
+            ->keyBy('criterio_id');  // Organiza las evaluaciones por criterio
+
+        return view('innovations.edit', compact('innovation', 'criterios', 'evaluaciones'));
     }
 
     /**
@@ -59,45 +66,56 @@ class InnovationController extends Controller
      */
     public function update(Request $request, Innovation $innovation)
     {
-        {
-             // Validar los datos de la solicitud
-    $validated = $request->validate([
-        'criterios.*.id' => 'required|exists:criterios,id',
-        'criterios.*.puntaje' => 'required|integer|min:0', // Valida que sea un número entero positivo
-        'criterios.*.comentario' => 'nullable|string',
-    ]);
+        // Validar los datos de la solicitud
+        $validated = $request->validate([
+            'criterios.*.id' => 'required|exists:criterios,id',
+            'criterios.*.puntaje' => 'required|integer|min:0', // Valida que sea un número entero positivo
+            'criterios.*.comentario' => 'nullable|string',
+        ]);
 
-    // Inicializar la suma total de puntajes
-    $totalPuntaje = 0;
+        // Inicializar la suma total de puntajes para esta evaluación
+        $puntajeUsuario = 0;
 
-    // Iterar sobre los criterios enviados en la solicitud
-    foreach ($validated['criterios'] as $criterioData) {
-        // Obtener el criterio para acceder a su puntaje (score)
-        $criterio = Criterio::find($criterioData['id']);
+        // Iterar sobre los criterios enviados en la solicitud
+        foreach ($validated['criterios'] as $criterioData) {
+            // Obtener el criterio para acceder a su puntaje (score)
+            $criterio = Criterio::find($criterioData['id']);
 
-        // Obtener o crear la evaluación del usuario para este criterio y la innovación
-        $evaluation = Evaluation::updateOrCreate(
-            [
-                'user_id' => 1,
-                'innovation_id' => $innovation->id,
-                'criterio_id' => $criterio->id,
-            ],
-            [
-                'puntaje' => $criterioData['puntaje'],
-                'comentario' => $criterioData['comentario'] ?? null,
-            ]
-        );
+            // Crear o actualizar la evaluación del usuario para este criterio y la innovación
+            $evaluation = Evaluation::updateOrCreate(
+                [
+                    'user_id' => Auth::user()->id,
+                    'innovation_id' => $innovation->id,
+                    'criterio_id' => $criterio->id,
+                ],
+                [
+                    'puntaje' => $criterioData['puntaje'],
+                    'comentario' => $criterioData['comentario'] ?? null,
+                ]
+            );
 
-        // Sumar el puntaje ponderado al total usando el score del criterio
-        $totalPuntaje += $criterioData['puntaje'] * $criterio->score / 100;
-    } 
-
-    // Actualizar el puntaje total de la innovación
-    $innovation->puntaje = $totalPuntaje;
-    $innovation->save();
-
-    return redirect()->route('innovations.index');
+            // Sumar el puntaje ponderado al total usando el score del criterio
+            $puntajeUsuario += $criterioData['puntaje'];
         }
+
+        $totalPuntajeActual = Evaluation::where('innovation_id', $innovation->id)
+            ->sum('puntaje');
+
+        // Obtener las evaluaciones de esta innovación, agrupadas por usuario
+        $evaluacionesPorUsuario = Evaluation::where('innovation_id', $innovation->id)
+            ->distinct('user_id')
+            ->count('user_id'); // Contar los usuarios únicos que han evaluado esta innovación
+
+        // Calcular el promedio dividiendo entre el número de usuarios únicos que evaluaron la innovación
+        if ($evaluacionesPorUsuario > 0) {
+            $innovation->puntaje = $totalPuntajeActual / $evaluacionesPorUsuario;
+        } else {
+            $innovation->puntaje = $totalPuntajeActual; // Si es la primera evaluación
+        }
+
+        $innovation->save();
+
+        return redirect()->route('innovations.index');
     }
 
     /**
