@@ -69,7 +69,7 @@ class InnovationController extends Controller
     
             // Calcular el puntaje total basado en los puntajes de los criterios
             $totalPuntaje = $request->criterio1 + $request->criterio2 + $request->criterio3 + $request->criterio4 + $request->criterio5;
-    
+            $totalPuntaje = ($totalPuntaje / 3);
             // Guardar el puntaje total en la innovación
             $innovation->puntaje = $totalPuntaje;
             $innovation->save();

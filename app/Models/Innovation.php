@@ -30,4 +30,9 @@ class Innovation extends Model
         'colegio',
         'coautor',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

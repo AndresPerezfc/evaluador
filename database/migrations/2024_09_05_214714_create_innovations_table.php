@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('programa')->nullable();;
             $table->string('colegio')->nullable();;
             $table->string('coautor')->nullable();;
+            $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
         });
     }
