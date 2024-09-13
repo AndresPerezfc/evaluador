@@ -226,38 +226,26 @@
 
                     {{-- Contenido --}}
 
-                    <h1>Evaluar Innovación: {{ $innovation->name }}</h1>
+                    <h1>Evaluar Innovación: {{ $innovation->titulo }}</h1>
 
     <form action="{{ route('innovations.update', $innovation->id) }}" method="POST">
         @csrf
         @method('PUT')
 
-        <div>
-            <label for="criterio1">Criterio 1 (40 puntos):</label>
-            <input type="number" name="criterio1" id="criterio1" min="0" max="40" required>
-        </div>
+        <h3>Criterios de Evaluación</h3>
+        <ul>
+            @forelse ($criterios as $criterio)
+                <li>
+                    <strong>{{ $criterio->name }}</strong> - {{ $criterio->description }}
+                    <!-- Aquí podrías agregar inputs si necesitas que el evaluador puntúe los criterios -->
+                    <input type="number" name="criterios[{{ $criterio->id }}]" placeholder="Puntaje" max="{{ $criterio->score }}">
+                </li>
+            @empty
+                <li>No hay criterios disponibles para esta categoría.</li>
+            @endforelse
+        </ul>
 
-        <div>
-            <label for="criterio2">Criterio 2 (20 puntos):</label>
-            <input type="number" name="criterio2" id="criterio2" min="0" max="20" required>
-        </div>
-
-        <div>
-            <label for="criterio3">Criterio 3 (20 puntos):</label>
-            <input type="number" name="criterio3" id="criterio3" min="0" max="20" required>
-        </div>
-
-        <div>
-            <label for="criterio4">Criterio 4 (10 puntos):</label>
-            <input type="number" name="criterio4" id="criterio4" min="0" max="10" required>
-        </div>
-
-        <div>
-            <label for="criterio5">Criterio 5 (10 puntos):</label>
-            <input type="number" name="criterio5" id="criterio5" min="0" max="10" required>
-        </div>
-
-        <button type="submit">Guardar Evaluación</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
                         
                     {{-- Contenido --}}

@@ -45,7 +45,9 @@ class InnovationController extends Controller
      */
     public function edit(Innovation $innovation)
     {
-            return view('innovations.edit', compact('innovation'));
+
+        $criterios = $innovation->category->criterios;
+            return view('innovations.edit', compact('innovation', 'criterios'));
     
     }
 

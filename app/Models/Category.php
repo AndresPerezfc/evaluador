@@ -20,4 +20,9 @@ class Category extends Model
     {
         return $this->hasMany(Innovation::class);
     }
+
+    public function criterios()
+    {
+        return $this->hasMany(Criterio::class);
+    }
 }
