@@ -239,7 +239,7 @@
                     <!-- Contenedor para las dos columnas -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <!-- Columna 1: Video de presentación -->
-                        <div class="aspect-w-16 aspect-h-9 bg-gray-200 p-2 rounded-md shadow-md">
+                        <div class="aspect-w-16 aspect-h-9 p-2 rounded-md shadow-md">
                             <iframe class="w-full h-full"
                                 src="https://www.youtube.com/embed/3io6VJgR60Y?si=OQv2B4vNJmQD6onn"
                                 title="Presentación de Innovación" frameborder="0"
@@ -250,7 +250,7 @@
                         <!-- Columna 2: Datos -->
                         <div class="flex flex-col justify-between space-y-6">
                             <!-- Puntaje Actual -->
-                            <div class="bg-green-100 p-4 rounded-md shadow-md">
+                            <div class="p-4 rounded-md shadow-md">
                                 <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
                                 <div class="text-2xl font-bold text-green-600">
                                     {{ number_format($innovation->puntaje, 1) }} / 100
@@ -258,18 +258,142 @@
                             </div>
 
                             <!-- Datos de la Innovación -->
-                            <div class="bg-gray-50 p-4 rounded-md shadow-md">
-                                <h2 class="text-2xl font-medium mb-4">Datos de la Innovación</h2>
-                                <p><strong>Nombre:</strong> {{ $innovation->titulo }}</p>
-                                <p><strong>Descripción:</strong> {{ $innovation->descripcion }}</p>
-                                <p><strong>Enlace a la Innovación:</strong> <a href="{{ $innovation->url }}"
-                                        class="text-blue-500 hover:underline"
-                                        target="_blank">{{ $innovation->url }}</a></p>
-                                <p><strong>Proceso de Creación:</strong> {{ $innovation->proceso }}</p>
+                            <div class="p-4 rounded-md shadow-md">
+                                <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
+                                <p class="mb-2"><a href="{{ $innovation->url }}"
+                                        class="text-blue-500 hover:underline" target="_blank">Enlace a la
+                                        innovación</a></p>
+                                <p class="mb-2"><strong>Nombre del Innovador:</strong> {{ $innovation->innovador }}
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Descripción:</strong>
+                                    {{ Str::limit($innovation->descripcion, 300) }}
+
+                                    @if (strlen($innovation->descripcion) > 300)
+                                        <a href="#" class="text-blue-600 hover:underline"
+                                        data-modal-target="#descriptionModal-{{ $innovation->id }}"
+                                        data-modal-toggle="descriptionModal-{{ $innovation->id }}">
+                                            Ver más
+                                        </a>
+                                    @endif
+                                </p>
+
+
+
+                                <!-- Modal -->
+                                <div id="descriptionModal-{{ $innovation->id }}" tabindex="-1"
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                    <div class="relative max-w-xl max-h-full w-full">
+                                        <!-- Modal content -->
+                                        <div
+                                            class="relative bg-white max-w-2xl w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
+                                            <!-- Modal header -->
+                                            <div
+                                                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                                                <h3 class="text-xl font-medium text-gray-900">
+                                                    Descripción completa
+                                                </h3>
+                                                <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                                    data-modal-hide="descriptionModal-{{ $innovation->id }}">
+                                                    <svg class="w-3 h-3" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                    </svg>
+                                                    <span class="sr-only">Cerrar</span>
+                                                </button>
+                                            </div>
+
+                                            <!-- Modal body with scroll -->
+                                            <div class="p-4 md:p-5 space-y-4 overflow-y-auto max-h-80">
+                                                <p class="text-base leading-relaxed text-gray-500">
+                                                    {{ $innovation->descripcion }}
+                                                </p>
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div
+                                                class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+                                                <button data-modal-hide="descriptionModal-{{ $innovation->id }}"
+                                                    type="button"
+                                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                                                    Cerrar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <p>
+                                    <strong>Proceso de Creación:</strong>
+                                    {{ Str::limit($innovation->proceso, 300) }}
+
+                                    @if (strlen($innovation->proceso) > 300)
+                                        <a href="#" class="text-blue-600 hover:underline"
+                                            data-modal-target="#procesoModal-{{ $innovation->id }}"
+                                            data-modal-toggle="procesoModal-{{ $innovation->id }}">
+                                            Ver más
+                                        </a>
+                                    @endif
+                                </p>
+
+                                <!-- Modal -->
+                                <div id="procesoModal-{{ $innovation->id }}" tabindex="-1"
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                    <div class="relative max-w-xl max-h-full w-full">
+                                        <!-- Modal content -->
+                                        <div
+                                            class="relative bg-white max-w-2xl w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
+                                            <!-- Modal header -->
+                                            <div
+                                                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                                                <h3 class="text-xl font-medium text-gray-900">
+                                                    Proceso completo
+                                                </h3>
+                                                <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                                    data-modal-hide="procesoModal-{{ $innovation->id }}">
+                                                    <svg class="w-3 h-3" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                    </svg>
+                                                    <span class="sr-only">Cerrar</span>
+                                                </button>
+                                            </div>
+
+                                            <!-- Modal body with scroll -->
+                                            <div class="p-4 md:p-5 space-y-4 overflow-y-auto max-h-80">
+                                                <p class="text-base leading-relaxed text-gray-500">
+                                                    {{ $innovation->proceso }}
+                                                </p>
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div
+                                                class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+                                                <button data-modal-hide="procesoModal-{{ $innovation->id }}"
+                                                    type="button"
+                                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                                                    Cerrar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
 
                             <!-- Datos del Innovador -->
-                            <div class="bg-gray-50 p-4 rounded-md shadow-md">
+                            <div class="p-4 rounded-md shadow-md">
                                 <h2 class="text-2xl font-medium mb-4">Datos del Innovador</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
                                     <div>
@@ -278,7 +402,7 @@
                                         <p><strong>Categoría:</strong> {{ $innovation->categoria }}</p>
                                     </div>
                                     <div>
-                                        <p><strong>Email:</strong> {{ $innovation->email }}</p>
+                                        <p><a class="text-blue-600 hover:underline" href= "{{ $innovation->email }}">Email</a></p>
                                         <p><strong>Teléfono:</strong> {{ $innovation->telefono }}</p>
                                         <p><strong>Vinculación:</strong> {{ $innovation->vinculacion }}</p>
                                     </div>
@@ -347,7 +471,7 @@
                             <!-- Botón Guardar -->
                             <div class="text-center mb-6">
                                 <button type="submit"
-                                    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                                     Guardar Evaluación
                                 </button>
                             </div>
@@ -369,5 +493,24 @@
     @livewireScripts
 </body>
 
+
+<script>
+    // Función para abrir el modal
+    document.querySelectorAll('[data-modal-toggle]').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const modalId = this.getAttribute('data-modal-target');
+            document.querySelector(modalId).classList.remove('hidden');
+        });
+    });
+
+    // Función para cerrar el modal
+    document.querySelectorAll('[data-modal-hide]').forEach(button => {
+        button.addEventListener('click', function() {
+            const modalId = this.closest('.fixed');
+            modalId.classList.add('hidden');
+        });
+    });
+</script>
 
 </html>

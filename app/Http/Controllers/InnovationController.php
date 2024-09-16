@@ -15,7 +15,7 @@ class InnovationController extends Controller
      */
     public function index()
     {
-        $innovations = Innovation::orderBy('puntaje', 'desc')->paginate(10);
+        $innovations = Innovation::orderBy('puntaje', 'desc')->get();
 
         foreach ($innovations as $innovation) {
             $innovation->evaluaciones_por_usuario = Evaluation::where('innovation_id', $innovation->id)
