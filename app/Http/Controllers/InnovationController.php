@@ -15,7 +15,14 @@ class InnovationController extends Controller
      */
     public function index()
     {
-        $innovations = Innovation::orderBy('id', 'desc')->paginate(10);
+        $innovations = Innovation::orderBy('puntaje', 'desc')->paginate(10);
+
+        foreach ($innovations as $innovation) {
+            $innovation->evaluaciones_por_usuario = Evaluation::where('innovation_id', $innovation->id)
+                ->distinct('user_id')
+                ->count('user_id');
+        }
+
         return view('innovations.index', compact('innovations'));
     }
 
@@ -115,7 +122,9 @@ class InnovationController extends Controller
 
         $innovation->save();
 
-        return redirect()->route('innovations.index');
+        // Agregar un mensaje de éxito a la sesión
+        return redirect()->route('innovations.index')
+            ->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
     }
 
     /**

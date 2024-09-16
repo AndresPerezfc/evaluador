@@ -36,7 +36,7 @@ class Innovation extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function evaluation()
+    public function evaluations()
     {
         return $this->hasMany(Evaluation::class);
     }

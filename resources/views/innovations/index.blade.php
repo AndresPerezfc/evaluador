@@ -29,6 +29,8 @@
     isOpen: false
 }":class="{'overflow-hidden': open}" class="sm:overflow-auto">
 
+
+
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -146,6 +148,8 @@
         ];
     @endphp
 
+
+
     <aside id="logo-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         :class="{
@@ -153,7 +157,7 @@
             '-translate-x-full': !open,
         }"
         aria-label="Sidebar">
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800 mt-16">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
 
                 @foreach ($links as $link)
@@ -216,12 +220,20 @@
     </aside>
 
 
+
     <div class="p-4 sm:ml-64">
 
         <div class="mt-14">
 
 
             <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+
+                @if (session('success'))
+                    <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                        role="alert">
+                        <span class="font-medium">{{ session('success') }}</span>
+                    </div>
+                @endif
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -274,6 +286,24 @@
                                             </svg></a>
                                     </div>
                                 </th>
+
+                                <th scope="col" class="px-6 py-3">
+                                    <div class="flex items-center">
+                                        Calificaciones
+                                        <a href="#"><svg class="w-3 h-3 ms-1.5" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                                            </svg></a>
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <div class="flex items-center">
+                                        Evaluado
+                                    </div>
+                                </th>
+
                                 <th scope="col" class="px-6 py-3">
                                     <span class="sr-only">Edit</span>
                                 </th>
@@ -293,13 +323,23 @@
                                         {{ $innovation->rol_autor }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a target="_blank" href=" {{ $innovation->url }}">link</a>
+                                        <a target="_blank" href="{{ $innovation->url }}">link</a>
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{$innovation->puntaje}}
+                                        {{ number_format($innovation->puntaje, 1) }}
+                                    </td>
+                                    <td class="px-6 py-4 items-center">
+                                        {{ $innovation->evaluaciones_por_usuario }}/3
+                                    </td>
+                                    <td class="px-6 py-4 items-center">
+                                        @if ($innovation->evaluaciones_por_usuario < 3)
+                                            <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
+                                        @else
+                                            <i class="fa-regular fa-circle-check text-green-500 text-center"></i>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{route('innovations.edit', $innovation->id)}}">Evaluar</a>
+                                        <a href="{{ route('innovations.edit', $innovation->id) }}">Evaluar</a>
                                     </td>
 
                                 </tr>

@@ -32,23 +32,36 @@
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
-                <div class="flex items-center justify-start rtl:justify-end">
-                    <button x-on:click="open = !open" data-drawer-target="logo-sidebar"
-                        data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
-                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-                        <span class="sr-only">Open sidebar</span>
-                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path clip-rule="evenodd" fill-rule="evenodd"
-                                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
-                            </path>
-                        </svg>
-                    </button>
-                    <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-                        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
-                        <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
-                    </a>
+                <!-- Contenedor del logo y título -->
+                <div class="flex flex-grow items-center">
+                    <!-- Logo y botón de menú en dispositivos móviles -->
+                    <div class="flex items-center justify-start rtl:justify-end">
+                        <button x-on:click="open = !open" data-drawer-target="logo-sidebar"
+                            data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
+                            class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                            <span class="sr-only">Open sidebar</span>
+                            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                    d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+                                </path>
+                            </svg>
+                        </button>
+                        <a href="https://flowbite.com" class="flex items-center">
+                            <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
+                            <span
+                                class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
+                        </a>
+                    </div>
+                    <!-- Título centrado -->
+                    <div class="flex-grow text-center">
+                        <h1 class="text-3xl font-semibold">
+                            {{ $innovation->titulo }}
+                        </h1>
+                    </div>
                 </div>
+
+                <!-- Menú de usuario -->
                 <div class="flex items-center">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -112,7 +125,7 @@
             [
                 'name' => 'Tus Innovaciones',
                 'icon' => 'fa-solid fa-gauge',
-                'route' => '#',
+                'route' => '/innovations',
                 'active' => true,
             ],
 
@@ -215,48 +228,134 @@
     </aside>
 
 
-
-
     <div class="p-4 sm:ml-64">
         <div class="mt-14">
-            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="p-4 rounded-lg">
 
+                {{-- Contenido --}}
 
-                    {{-- Contenido --}}
+                <div class="container mx-auto my-8 p-6 bg-white shadow rounded-lg">
 
-                    <h1>Evaluar Innovación: {{ $innovation->titulo }}</h1>
+                    <!-- Contenedor para las dos columnas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- Columna 1: Video de presentación -->
+                        <div class="aspect-w-16 aspect-h-9 bg-gray-200 p-2 rounded-md shadow-md">
+                            <iframe class="w-full h-full"
+                                src="https://www.youtube.com/embed/3io6VJgR60Y?si=OQv2B4vNJmQD6onn"
+                                title="Presentación de Innovación" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
 
-                    <form action="{{ route('innovations.update', $innovation->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-
-                        <h3>Criterios de Evaluación</h3>
-                        @foreach ($criterios as $criterio)
-                            @php
-                                // Obtener la evaluación anterior para este criterio, si existe
-                                $evaluacion = $evaluaciones->get($criterio->id);
-                            @endphp
-                            <div>
-                                <label for="criterio-{{ $criterio->id }}">{{ $criterio->name }} (Peso:
-                                    {{ $criterio->score }})</label>
-                                <input type="hidden" name="criterios[{{ $loop->index }}][id]"
-                                    value="{{ $criterio->id }}">
-
-                                <input type="number" name="criterios[{{ $loop->index }}][puntaje]" min="0"
-                                    max="{{ $criterio->score }}" value="{{ $evaluacion->puntaje ?? '' }}" required>
-
-                                <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario">{{ $evaluacion->comentario ?? '' }}</textarea> <!-- Comentario anterior -->
+                        <!-- Columna 2: Datos -->
+                        <div class="flex flex-col justify-between space-y-6">
+                            <!-- Puntaje Actual -->
+                            <div class="bg-green-100 p-4 rounded-md shadow-md">
+                                <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
+                                <div class="text-2xl font-bold text-green-600">
+                                    {{ number_format($innovation->puntaje, 1) }} / 100
+                                </div>
                             </div>
-                        @endforeach
 
-                        <button type="submit">Guardar Evaluación</button>
-                    </form>
+                            <!-- Datos de la Innovación -->
+                            <div class="bg-gray-50 p-4 rounded-md shadow-md">
+                                <h2 class="text-2xl font-medium mb-4">Datos de la Innovación</h2>
+                                <p><strong>Nombre:</strong> {{ $innovation->titulo }}</p>
+                                <p><strong>Descripción:</strong> {{ $innovation->descripcion }}</p>
+                                <p><strong>Enlace a la Innovación:</strong> <a href="{{ $innovation->url }}"
+                                        class="text-blue-500 hover:underline"
+                                        target="_blank">{{ $innovation->url }}</a></p>
+                                <p><strong>Proceso de Creación:</strong> {{ $innovation->proceso }}</p>
+                            </div>
 
-                    {{-- Contenido --}}
+                            <!-- Datos del Innovador -->
+                            <div class="bg-gray-50 p-4 rounded-md shadow-md">
+                                <h2 class="text-2xl font-medium mb-4">Datos del Innovador</h2>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
+                                    <div>
+                                        <p><strong>Nombre:</strong> {{ $innovation->innovador }}</p>
+                                        <p><strong>Rol:</strong> {{ $innovation->rol_autor }}</p>
+                                        <p><strong>Categoría:</strong> {{ $innovation->categoria }}</p>
+                                    </div>
+                                    <div>
+                                        <p><strong>Email:</strong> {{ $innovation->email }}</p>
+                                        <p><strong>Teléfono:</strong> {{ $innovation->telefono }}</p>
+                                        <p><strong>Vinculación:</strong> {{ $innovation->vinculacion }}</p>
+                                    </div>
+                                    <div>
+                                        <p><strong>Facultad:</strong> {{ $innovation->facultad }}</p>
+                                        <p><strong>Programa Académico:</strong> {{ $innovation->programa }}</p>
+                                        <p><strong>Dependencia:</strong> {{ $innovation->dependencia }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Formulario de Evaluación -->
+                    <div class="container mx-auto my-2 px-6 bg-white rounded-lg">
 
+                        <!-- Formulario de Evaluación -->
+                        <form action="{{ route('innovations.update', $innovation->id) }}" method="POST"
+                            class="space-y-6">
+                            @csrf
+                            @method('PUT')
+
+                            <!-- Criterios de Evaluación -->
+                            <h3 class="text-2xl font-medium mb-4">Criterios de Evaluación</h3>
+
+                            <!-- Contenedor con bordes y separaciones -->
+                            <div
+                                class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 divide-y divide-gray-300 border border-gray-300 rounded-md">
+
+                                @foreach ($criterios as $criterio)
+                                    @php
+                                        $evaluacion = $evaluaciones->get($criterio->id);
+                                    @endphp
+
+                                    <!-- Fila del criterio con bordes -->
+                                    <div class="flex items-center border-b border-gray-300 p-4">
+                                        <label for="criterio-{{ $criterio->id }}" class="text-lg font-semibold">
+                                            {{ $criterio->name }} <span class="text-sm font-extralight">(Peso:
+                                                {{ $criterio->score }})</span>
+                                        </label>
+                                    </div>
+
+                                    <!-- Descripción del criterio -->
+                                    <div class="flex items-center border-b border-gray-300 p-4">
+                                        <p class=" text-gray-600">{{ $criterio->description }}</p>
+                                    </div>
+
+                                    <!-- Input para puntaje -->
+                                    <div class="flex items-center border-b border-gray-300 p-4">
+                                        <input type="hidden" name="criterios[{{ $loop->index }}][id]"
+                                            value="{{ $criterio->id }}">
+                                        <input type="number" name="criterios[{{ $loop->index }}][puntaje]"
+                                            min="0" max="{{ $criterio->score }}"
+                                            value="{{ $evaluacion->puntaje ?? '' }}" required
+                                            class="border border-gray-300 p-2 w-full">
+                                    </div>
+
+                                    <!-- Input para comentario -->
+                                    <div class="flex items-center border-b border-gray-300 p-4">
+                                        <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario"
+                                            class="border border-gray-300 p-2 w-full">{{ $evaluacion->comentario ?? '' }}</textarea>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Botón Guardar -->
+                            <div class="text-center mb-6">
+                                <button type="submit"
+                                    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                    Guardar Evaluación
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+                {{-- Contenido --}}
+
             </div>
         </div>
     </div>
@@ -269,5 +368,6 @@
 
     @livewireScripts
 </body>
+
 
 </html>
