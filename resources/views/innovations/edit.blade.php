@@ -116,37 +116,24 @@
     @php
         $links = [
             [
+                'name' => 'Co-creemos',
+                'icon' => 'fa-solid fa-people-group',
+                'active' => false,
+                'route' => '/creations',
+            ],
+
+            [
                 'name' => 'Tus Innovaciones',
-                'icon' => 'fa-solid fa-gauge',
+                'icon' => 'fa-solid fa-lightbulb',
                 'route' => '/innovations',
                 'active' => true,
             ],
 
             [
                 'name' => 'Mejor video educativo',
-                'icon' => 'fa-solid fa-users',
+                'icon' => 'fa-solid fa-chalkboard-user',
                 'route' => '',
                 'active' => false,
-            ],
-
-            [
-                'name' => 'Co-creemos',
-                'icon' => 'fa-solid fa-building',
-                'active' => false,
-                'submenu' => [
-                    [
-                        'name' => 'información',
-                        'icon' => 'fa-regular fa-circle',
-                        'route' => '',
-                        'active' => false,
-                    ],
-                    [
-                        'name' => 'información',
-                        'icon' => 'fa-regular fa-circle',
-                        'route' => '',
-                        'active' => false,
-                    ],
-                ],
             ],
         ];
     @endphp
@@ -237,7 +224,8 @@
                             @if (!empty($innovation->incrustable))
                                 {!! $innovation->incrustable !!}
                             @else
-                                <p class="text-center text-gray-500">Sin video de presentación <br> {{$innovation->presentacion}}</p>
+                                <p class="text-center text-gray-500">Sin video de presentación <br>
+                                    {{ $innovation->presentacion }}</p>
                             @endif
                         </div>
 
@@ -247,8 +235,18 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="p-4 rounded-md shadow-md">
                                     <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
-                                    <div class="text-2xl font-bold text-green-600">
-                                        {{ number_format($innovation->puntaje, 1) }} / 100
+                                    @php
+                                        $puntaje = $innovation->puntaje;
+                                        $textColorClass = 'text-red-500'; // Valor por defecto
+                                
+                                        if ($puntaje >= 80) {
+                                            $textColorClass = 'text-green-600';
+                                        } elseif ($puntaje > 49) {
+                                            $textColorClass = 'text-yellow-500';
+                                        }
+                                    @endphp
+                                    <div class="text-2xl font-bold {{ $textColorClass }}">
+                                        {{ number_format($puntaje, 1) }} / 100
                                     </div>
                                 </div>
 
@@ -451,7 +449,7 @@
                                     @endphp
 
                                     <!-- Fila del criterio con bordes -->
-                                    <div class="flex items-center border-b border-gray-300 p-4">
+                                    <div class="flex items-center p-4">
                                         <label for="criterio-{{ $criterio->id }}" class="text-lg font-semibold">
                                             {{ $criterio->name }} <span class="text-sm font-extralight">(Peso:
                                                 {{ $criterio->score }})</span>
@@ -479,6 +477,13 @@
                                             class="border border-gray-300 p-2 w-full">{{ $evaluacion->comentario ?? '' }}</textarea>
                                     </div>
                                 @endforeach
+                            </div>
+
+                            <!-- Caja de texto para comentario general -->
+                            <h3 class="text-2xl font-medium">Comentario general</h3>
+                            <div class="flex items-center">
+                                <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
+                                    class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario_general', $innovation->comentario_general ?? '') }}</textarea>
                             </div>
 
                             <!-- Botón Guardar -->

@@ -117,38 +117,25 @@
     @php
         $links = [
             [
+                'name' => 'Co-creemos',
+                'icon' => 'fa-solid fa-people-group',
+                'active' => false,
+                'route' => '/creations'
+            ],
+
+            [
                 'name' => 'Tus Innovaciones',
-                'icon' => 'fa-solid fa-gauge',
+                'icon' => 'fa-solid fa-lightbulb',
                 'route' => '#',
                 'active' => true,
             ],
 
             [
                 'name' => 'Mejor video educativo',
-                'icon' => 'fa-solid fa-users',
+                'icon' => 'fa-solid fa-chalkboard-user',
                 'route' => '',
                 'active' => false,
-            ],
-
-            [
-                'name' => 'Co-creemos',
-                'icon' => 'fa-solid fa-building',
-                'active' => false,
-                'submenu' => [
-                    [
-                        'name' => 'información',
-                        'icon' => 'fa-regular fa-circle',
-                        'route' => '',
-                        'active' => false,
-                    ],
-                    [
-                        'name' => 'información',
-                        'icon' => 'fa-regular fa-circle',
-                        'route' => '',
-                        'active' => false,
-                    ],
-                ],
-            ],
+            ],        
         ];
     @endphp
 

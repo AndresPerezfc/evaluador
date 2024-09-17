@@ -101,6 +101,7 @@ class InnovationController extends Controller
             'criterios.*.id' => 'required|exists:criterios,id',
             'criterios.*.puntaje' => 'required|integer|min:0', // Valida que sea un número entero positivo
             'criterios.*.comentario' => 'nullable|string',
+            'comentario_general' => 'nullable|string',
         ]);
 
         // Inicializar la suma total de puntajes para esta evaluación
@@ -127,6 +128,9 @@ class InnovationController extends Controller
             // Sumar el puntaje ponderado al total usando el score del criterio
             $puntajeUsuario += $criterioData['puntaje'];
         }
+
+        // Actualizar el comentario general
+        $innovation->comentario_general = $validated['comentario_general'] ?? null;
 
         $totalPuntajeActual = Evaluation::where('innovation_id', $innovation->id)->sum('puntaje');
 

@@ -29,6 +29,7 @@ class Innovation extends Model
         'programa',
         'colegio',
         'coautor',
+        'comentario_general'
     ];
 
     public function category()

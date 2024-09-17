@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Tus Innovaciones</title>
+    <title>Co-creemos</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -31,7 +31,7 @@
 
 
 
-    <nav style="background: linear-gradient(90deg, #40DEA9 10%, #B6E982 100%);"  class="fixed top-0 z-50 w-full border-b border-gray-200">
+    <nav style="background: linear-gradient(75deg, #FF8957 23%, #FF5F69 100%);"  class="fixed top-0 z-50 w-full border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -53,7 +53,7 @@
                 <!-- Título centrado -->
                 <div class="flex-grow">
                     <h1 class="text-3xl ml-7 text-white font-semibold">
-                        Tus Innovaciones
+                        Co-creemos
                     </h1>
                 </div>
                 <div class="flex items-center">
@@ -117,38 +117,25 @@
     @php
         $links = [
             [
-                'name' => 'Tus Innovaciones',
-                'icon' => 'fa-solid fa-gauge',
-                'route' => '#',
+                'name' => 'Co-creemos',
+                'icon' => 'fa-solid fa-people-group',
                 'active' => true,
+                'route' => '#'
+            ],
+
+            [
+                'name' => 'Tus Innovaciones',
+                'icon' => 'fa-solid fa-lightbulb',
+                'route' => '/innovations',
+                'active' => false,
             ],
 
             [
                 'name' => 'Mejor video educativo',
-                'icon' => 'fa-solid fa-users',
+                'icon' => 'fa-solid fa-chalkboard-user',
                 'route' => '',
                 'active' => false,
-            ],
-
-            [
-                'name' => 'Co-creemos',
-                'icon' => 'fa-solid fa-building',
-                'active' => false,
-                'submenu' => [
-                    [
-                        'name' => 'información',
-                        'icon' => 'fa-regular fa-circle',
-                        'route' => '',
-                        'active' => false,
-                    ],
-                    [
-                        'name' => 'información',
-                        'icon' => 'fa-regular fa-circle',
-                        'route' => '',
-                        'active' => false,
-                    ],
-                ],
-            ],
+            ],        
         ];
     @endphp
 
@@ -244,27 +231,52 @@
                                     #
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Título
+                                    <a href="{{ route('innovations.index', ['sort_by' => 'titulo', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                        Título
+                                        @if($sortBy == 'titulo')
+                                            @if($sortDirection == 'asc')
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            @else
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                            @endif
+                                        @endif
+                                    </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
+                                    <a href="{{ route('innovations.index', ['sort_by' => 'innovador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Autor
-                                    </div>
+                                        @if($sortBy == 'innovador')
+                                            @if($sortDirection == 'asc')
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            @else
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                            @endif
+                                        @endif
+                                    </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
-                                        Rol autor
-                                    </div>
+                                    <a href="{{ route('innovations.index', ['sort_by' => 'rol_autor', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                        Rol Autor
+                                        @if($sortBy == 'rol_autor')
+                                            @if($sortDirection == 'asc')
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            @else
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                            @endif
+                                        @endif
+                                    </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
-                                        Enlace
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
+                                    <a href="{{ route('innovations.index', ['sort_by' => 'puntaje', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Puntaje
-                                    </div>
+                                        @if($sortBy == 'puntaje')
+                                            @if($sortDirection == 'asc')
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            @else
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                            @endif
+                                        @endif
+                                    </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     <div class="flex items-center">
@@ -274,6 +286,11 @@
                                 <th scope="col" class="px-6 py-3">
                                     <div class="flex items-center">
                                         Evaluado
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <div class="flex items-center">
+                                        Extra Puntos
                                     </div>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -301,9 +318,6 @@
                                         {{ $innovation->rol_autor }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a target="_blank" href="{{ $innovation->url }}">link</a>
-                                    </td>
-                                    <td class="px-6 py-4">
                                         {{ number_format($innovation->puntaje, 1) }}
                                     </td>
                                     <td class="px-6 py-4 items-center">
@@ -314,6 +328,13 @@
                                         <i class="fa-regular fa-circle-check text-green-500 text-center"></i>
                                         @else
                                         <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($innovation->extra_puntos)
+                                        <i class="fa-solid fa-check text-green-500"></i>
+                                        @else
+                                        <i class="fa-solid fa-x" style="color: #d05353;"></i>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
