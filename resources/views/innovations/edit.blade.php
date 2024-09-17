@@ -233,8 +233,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
                         <!-- Columna 1: Video de presentación -->
-                        <div class="aspect-w-16 aspect-h-9 p-2 rounded-md shadow-md">
-                            {!! $innovation->incrustable !!}
+                        <div class="aspect-w-16 aspect-h-9 p-2 rounded-md shadow-md flex items-center justify-center">
+                            @if (!empty($innovation->incrustable))
+                                {!! $innovation->incrustable !!}
+                            @else
+                                <p class="text-center text-gray-500">Sin video de presentación</p>
+                            @endif
                         </div>
 
                         <!-- Columna 2: Datos -->
@@ -404,17 +408,17 @@
                                         </p>
                                     </div>
                                     <div>
-                                        @if (!empty( $innovation->vinculacion ))
-                                        <p><strong>Vinculación:</strong> {{ $innovation->vinculacion }}</p>
+                                        @if (!empty($innovation->vinculacion))
+                                            <p><strong>Vinculación:</strong> {{ $innovation->vinculacion }}</p>
                                         @endif
                                         <p><strong>Categoría:</strong> {{ $innovation->categoria_autor }}</p>
                                     </div>
                                     <div>
-                                        @if (!empty($innovation->facultad ))
-                                        <p><strong>Facultad:</strong> {{ $innovation->facultad }}</p>
+                                        @if (!empty($innovation->facultad))
+                                            <p><strong>Facultad:</strong> {{ $innovation->facultad }}</p>
                                         @endif
                                         @if (!empty($innovation->programa))
-                                        <p><strong>Programa Académico:</strong> {{ $innovation->programa }}</p>
+                                            <p><strong>Programa Académico:</strong> {{ $innovation->programa }}</p>
                                         @endif
                                         @if (!empty($innovation->dependencia))
                                             <p><strong>Dependencia:</strong> {{ $innovation->dependencia }}</p>

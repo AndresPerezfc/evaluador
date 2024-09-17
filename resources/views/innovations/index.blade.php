@@ -244,27 +244,52 @@
                                     #
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Título
+                                    <a href="{{ route('innovations.index', ['sort_by' => 'titulo', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                        Título
+                                        @if($sortBy == 'titulo')
+                                            @if($sortDirection == 'asc')
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            @else
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                            @endif
+                                        @endif
+                                    </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
+                                    <a href="{{ route('innovations.index', ['sort_by' => 'innovador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Autor
-                                    </div>
+                                        @if($sortBy == 'innovador')
+                                            @if($sortDirection == 'asc')
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            @else
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                            @endif
+                                        @endif
+                                    </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
-                                        Rol autor
-                                    </div>
+                                    <a href="{{ route('innovations.index', ['sort_by' => 'rol_autor', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                        Rol Autor
+                                        @if($sortBy == 'rol_autor')
+                                            @if($sortDirection == 'asc')
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            @else
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                            @endif
+                                        @endif
+                                    </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
-                                        Enlace
-                                    </div>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <div class="flex items-center">
+                                    <a href="{{ route('innovations.index', ['sort_by' => 'puntaje', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Puntaje
-                                    </div>
+                                        @if($sortBy == 'puntaje')
+                                            @if($sortDirection == 'asc')
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                            @else
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                            @endif
+                                        @endif
+                                    </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     <div class="flex items-center">
@@ -274,6 +299,11 @@
                                 <th scope="col" class="px-6 py-3">
                                     <div class="flex items-center">
                                         Evaluado
+                                    </div>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <div class="flex items-center">
+                                        Extra Puntos
                                     </div>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -301,9 +331,6 @@
                                         {{ $innovation->rol_autor }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a target="_blank" href="{{ $innovation->url }}">link</a>
-                                    </td>
-                                    <td class="px-6 py-4">
                                         {{ number_format($innovation->puntaje, 1) }}
                                     </td>
                                     <td class="px-6 py-4 items-center">
@@ -314,6 +341,13 @@
                                         <i class="fa-regular fa-circle-check text-green-500 text-center"></i>
                                         @else
                                         <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($innovation->extra_puntos)
+                                        <i class="fa-solid fa-check text-green-500"></i>
+                                        @else
+                                        <i class="fa-solid fa-x" style="color: #d05353;"></i>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
