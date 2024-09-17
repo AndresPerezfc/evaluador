@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Tus Innovaciones</title>
+    <title>{{ $innovation->titulo }} -Tus Innovaciones</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,39 +29,32 @@
     isOpen: false
 }":class="{'overflow-hidden': open}" class="sm:overflow-auto">
 
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+    <nav style="background: linear-gradient(90deg, #40DEA9 10%, #B6E982 100%);"
+        class="fixed top-0 z-50 w-full border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
-                <!-- Contenedor del logo y título -->
-                <div class="flex flex-grow items-center">
-                    <!-- Logo y botón de menú en dispositivos móviles -->
-                    <div class="flex items-center justify-start rtl:justify-end">
-                        <button x-on:click="open = !open" data-drawer-target="logo-sidebar"
-                            data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
-                            class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-                            <span class="sr-only">Open sidebar</span>
-                            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path clip-rule="evenodd" fill-rule="evenodd"
-                                    d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
-                                </path>
-                            </svg>
-                        </button>
-                        <a href="https://flowbite.com" class="flex items-center">
-                            <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
-                            <span
-                                class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
-                        </a>
-                    </div>
-                    <!-- Título centrado -->
-                    <div class="flex-grow text-center">
-                        <h1 class="text-3xl font-semibold">
-                            {{ $innovation->titulo }}
-                        </h1>
-                    </div>
+                <div class="flex items-center justify-start rtl:justify-end">
+                    <button x-on:click="open = !open" data-drawer-target="logo-sidebar"
+                        data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
+                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                        <span class="sr-only">Open sidebar</span>
+                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" fill-rule="evenodd"
+                                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+                            </path>
+                        </svg>
+                    </button>
+                    <a href="/" class="flex ms-2 md:me-24">
+                        <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
+                    </a>
                 </div>
-
-                <!-- Menú de usuario -->
+                <!-- Título centrado -->
+                <div class="flex-grow">
+                    <h1 class="text-3xl ml-7 text-white font-semibold">
+                        {{ $innovation->titulo }}
+                    </h1>
+                </div>
                 <div class="flex items-center">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -159,7 +152,7 @@
     @endphp
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 "
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 mt-8"
         :class="{
             'transform-none': open,
             '-translate-x-full': !open,
@@ -238,24 +231,31 @@
 
                     <!-- Contenedor para las dos columnas -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
                         <!-- Columna 1: Video de presentación -->
                         <div class="aspect-w-16 aspect-h-9 p-2 rounded-md shadow-md">
-                            <iframe class="w-full h-full"
-                                src="https://www.youtube.com/embed/3io6VJgR60Y?si=OQv2B4vNJmQD6onn"
-                                title="Presentación de Innovación" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            {!! $innovation->incrustable !!}
                         </div>
 
                         <!-- Columna 2: Datos -->
                         <div class="flex flex-col justify-between space-y-6">
                             <!-- Puntaje Actual -->
-                            <div class="p-4 rounded-md shadow-md">
-                                <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
-                                <div class="text-2xl font-bold text-green-600">
-                                    {{ number_format($innovation->puntaje, 1) }} / 100
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-4 rounded-md shadow-md">
+                                    <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
+                                    <div class="text-2xl font-bold text-green-600">
+                                        {{ number_format($innovation->puntaje, 1) }} / 100
+                                    </div>
+                                </div>
+
+                                <div class="p-4 rounded-md shadow-md">
+                                    <h2 class="text-2xl font-medium mb-2">Rol</h2>
+                                    <div class="text-2xl font-bold text-green-600">
+                                        {{ $innovation->rol_autor }}
+                                    </div>
                                 </div>
                             </div>
+
 
                             <!-- Datos de la Innovación -->
                             <div class="p-4 rounded-md shadow-md">
@@ -272,8 +272,8 @@
 
                                     @if (strlen($innovation->descripcion) > 300)
                                         <a href="#" class="text-blue-600 hover:underline"
-                                        data-modal-target="#descriptionModal-{{ $innovation->id }}"
-                                        data-modal-toggle="descriptionModal-{{ $innovation->id }}">
+                                            data-modal-target="#descriptionModal-{{ $innovation->id }}"
+                                            data-modal-toggle="descriptionModal-{{ $innovation->id }}">
                                             Ver más
                                         </a>
                                     @endif
@@ -398,18 +398,27 @@
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
                                     <div>
                                         <p><strong>Nombre:</strong> {{ $innovation->innovador }}</p>
-                                        <p><strong>Rol:</strong> {{ $innovation->rol_autor }}</p>
-                                        <p><strong>Categoría:</strong> {{ $innovation->categoria }}</p>
+                                        <p class="whitespace-nowrap truncate max-w-xs"><strong>Correo: </strong><a
+                                                class="text-blue-600 hover:underline "
+                                                href= "mailto:{{ $innovation->email }}">{{ $innovation->email }}</a>
+                                        </p>
                                     </div>
                                     <div>
-                                        <p><a class="text-blue-600 hover:underline" href= "{{ $innovation->email }}">Email</a></p>
-                                        <p><strong>Teléfono:</strong> {{ $innovation->telefono }}</p>
+                                        @if (!empty( $innovation->vinculacion ))
                                         <p><strong>Vinculación:</strong> {{ $innovation->vinculacion }}</p>
+                                        @endif
+                                        <p><strong>Categoría:</strong> {{ $innovation->categoria_autor }}</p>
                                     </div>
                                     <div>
+                                        @if (!empty($innovation->facultad ))
                                         <p><strong>Facultad:</strong> {{ $innovation->facultad }}</p>
+                                        @endif
+                                        @if (!empty($innovation->programa))
                                         <p><strong>Programa Académico:</strong> {{ $innovation->programa }}</p>
-                                        <p><strong>Dependencia:</strong> {{ $innovation->dependencia }}</p>
+                                        @endif
+                                        @if (!empty($innovation->dependencia))
+                                            <p><strong>Dependencia:</strong> {{ $innovation->dependencia }}</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

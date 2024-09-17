@@ -16,8 +16,8 @@ class InnovationController extends Controller
     public function index()
     {
         $innovations = Innovation::whereIn('category_id', [1, 3])
-        ->orderBy('puntaje', 'desc')
-        ->get();
+            ->orderBy('puntaje', 'desc')
+            ->get();
 
         foreach ($innovations as $innovation) {
             $innovation->evaluaciones_por_usuario = Evaluation::where('innovation_id', $innovation->id)
@@ -123,6 +123,10 @@ class InnovationController extends Controller
             $innovation->puntaje = $totalPuntajeActual / $evaluacionesPorUsuario;
         } else {
             $innovation->puntaje = $totalPuntajeActual; // Si es la primera evaluación
+        }
+
+        if ($innovation->extra_puntos && $innovation->puntaje < 100) {
+            $innovation->puntaje = $innovation->puntaje + 10;
         }
 
         $innovation->save();
