@@ -21,6 +21,12 @@ class InnovationController extends Controller
             $innovation->evaluaciones_por_usuario = Evaluation::where('innovation_id', $innovation->id)
                 ->distinct('user_id')
                 ->count('user_id');
+
+
+                // Verificar si el usuario actual ha evaluado esta innovación
+        $innovation->evaluado_por_usuario_actual = Evaluation::where('innovation_id', $innovation->id)
+        ->where('user_id', Auth::user()->id)
+        ->exists();
         }
 
         return view('innovations.index', compact('innovations'));

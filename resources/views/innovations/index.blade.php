@@ -31,7 +31,7 @@
 
 
 
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+    <nav style="background: linear-gradient(90deg, #40DEA9 10%, #B6E982 100%);"  class="fixed top-0 z-50 w-full border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -46,10 +46,15 @@
                             </path>
                         </svg>
                     </button>
-                    <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-                        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
-                        <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
+                    <a href="/" class="flex ms-2 md:me-24">
+                        <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
                     </a>
+                </div>
+                <!-- Título centrado -->
+                <div class="flex-grow">
+                    <h1 class="text-3xl ml-7 text-white font-semibold">
+                        Tus Innovaciones
+                    </h1>
                 </div>
                 <div class="flex items-center">
                     <x-dropdown align="right" width="48">
@@ -150,7 +155,7 @@
 
 
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 mt-8"
         :class="{
             'transform-none': open,
             '-translate-x-full': !open,
@@ -222,10 +227,8 @@
 
     <div class="p-4 sm:ml-64">
 
-        <div class="mt-14">
-
-
-            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
+        <div class="mt-24">
+            <div class="py-8 px-16 border-2 border-gray-200 border-dashed rounded-lg">
 
                 @if (session('success'))
                     <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
@@ -280,7 +283,7 @@
                         </thead>
                         <tbody>
                             @foreach ($innovations as $innovation)
-                                <tr class="even:bg-gray-100 odd:bg-white border-b cursor-pointer"
+                                <tr class="even:bg-gray-100 odd:bg-white border-b cursor-pointer hover:bg-gray-200"
                                     data-url="{{ route('innovations.edit', $innovation->id) }}">
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
@@ -290,7 +293,8 @@
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
                                         {{ $innovation->titulo }}
                                     </th>
-                                    <td class="px-6 py-4">
+                                    <td scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
                                         {{ $innovation->innovador }}
                                     </td>
                                     <td class="px-6 py-4">
@@ -306,10 +310,10 @@
                                         {{ $innovation->evaluaciones_por_usuario }}/3
                                     </td>
                                     <td class="px-6 py-4 items-center">
-                                        @if ($innovation->evaluaciones_por_usuario < 3)
-                                            <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
+                                        @if ($innovation->evaluado_por_usuario_actual)
+                                        <i class="fa-regular fa-circle-check text-green-500 text-center"></i>
                                         @else
-                                            <i class="fa-regular fa-circle-check text-green-500 text-center"></i>
+                                        <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
