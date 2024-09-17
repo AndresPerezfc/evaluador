@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('criterio_id')->constrained('criterios');
             $table->integer('puntaje')->default(0);
             $table->text('comentario')->nullable();
+            $table->text('tipo');
             $table->timestamps();
         });
     }

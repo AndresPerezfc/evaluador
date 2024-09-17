@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Innovation extends Model
+class Creation extends Model
 {
     use HasFactory;
 
@@ -13,18 +13,16 @@ class Innovation extends Model
         'rol_autor',
         'categoria_autor',
         'titulo',
-        'descripcion',
-        'proceso',
-        'url',
+        'tematica',
+        'problematica',
         'presentacion',
-        'cocreador',
+        'innovador',
         'identificación',
         'email',
         'perfil_instagram',
         'telefono',
         'vinculacion',
         'dependencia',
-        'dependencia_aliada',
         'facultad',
         'programa',
         'colegio',

@@ -118,6 +118,7 @@ class InnovationController extends Controller
                     'user_id' => Auth::user()->id,
                     'innovation_id' => $innovation->id,
                     'criterio_id' => $criterio->id,
+                    'tipo' => 'innovations'
                 ],
                 [
                     'puntaje' => $criterioData['puntaje'],

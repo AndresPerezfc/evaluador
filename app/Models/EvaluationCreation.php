@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Evaluation extends Model
+class EvaluationCreation extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'innovation_id',
+        'creation_id',
         'criterio_id',
         'puntaje',
         'comentario',
         'tipo'
     ];
 
-    public function innovation()
+    public function creation()
     {
         return $this->belongsTo(Innovation::class);
     }
@@ -32,4 +32,4 @@ class Evaluation extends Model
     {
         return $this->belongsTo(User::class);
     }
-} 
+}

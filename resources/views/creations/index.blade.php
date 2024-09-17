@@ -120,13 +120,13 @@
                 'name' => 'Co-creemos',
                 'icon' => 'fa-solid fa-people-group',
                 'active' => true,
-                'route' => '#'
+                'route' => '/creations'
             ],
 
             [
                 'name' => 'Tus Innovaciones',
                 'icon' => 'fa-solid fa-lightbulb',
-                'route' => '/innovations',
+                'route' => '#',
                 'active' => false,
             ],
 
@@ -231,7 +231,7 @@
                                     #
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('innovations.index', ['sort_by' => 'titulo', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('creations.index', ['sort_by' => 'titulo', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Título
                                         @if($sortBy == 'titulo')
                                             @if($sortDirection == 'asc')
@@ -243,8 +243,8 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('innovations.index', ['sort_by' => 'innovador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
-                                        Autor
+                                    <a href="{{ route('creations.index', ['sort_by' => 'innovador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                        Creador
                                         @if($sortBy == 'innovador')
                                             @if($sortDirection == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
@@ -255,8 +255,8 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('innovations.index', ['sort_by' => 'rol_autor', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
-                                        Rol Autor
+                                    <a href="{{ route('creations.index', ['sort_by' => 'rol_autor', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                        Rol
                                         @if($sortBy == 'rol_autor')
                                             @if($sortDirection == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
@@ -267,7 +267,7 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('innovations.index', ['sort_by' => 'puntaje', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('creations.index', ['sort_by' => 'puntaje', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Puntaje
                                         @if($sortBy == 'puntaje')
                                             @if($sortDirection == 'asc')
@@ -299,46 +299,46 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($innovations as $innovation)
+                            @foreach ($creations as $creation)
                                 <tr class="even:bg-gray-100 odd:bg-white border-b cursor-pointer hover:bg-gray-200"
-                                    data-url="{{ route('innovations.edit', $innovation->id) }}">
+                                    data-url="{{ route('creations.edit', $creation->id) }}">
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
                                         {{ $loop->index + 1 }}
                                     </th>
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
-                                        {{ $innovation->titulo }}
+                                        {{ $creation->titulo }}
                                     </th>
                                     <td scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
-                                        {{ $innovation->innovador }}
+                                        {{ $creation->cocreador }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $innovation->rol_autor }}
+                                        {{ $creation->rol_autor }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ number_format($innovation->puntaje, 1) }}
+                                        {{ number_format($creation->puntaje, 1) }}
                                     </td>
                                     <td class="px-6 py-4 items-center">
-                                        {{ $innovation->evaluaciones_por_usuario }}/3
+                                        {{ $creation->evaluaciones_por_usuario }}/3
                                     </td>
                                     <td class="px-6 py-4 items-center">
-                                        @if ($innovation->evaluado_por_usuario_actual)
+                                        @if ($creation->evaluado_por_usuario_actual)
                                         <i class="fa-regular fa-circle-check text-green-500 text-center"></i>
                                         @else
                                         <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if ($innovation->extra_puntos)
+                                        @if ($creation->extra_puntos)
                                         <i class="fa-solid fa-check text-green-500"></i>
                                         @else
                                         <i class="fa-solid fa-x" style="color: #d05353;"></i>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('innovations.edit', $innovation->id) }}">Evaluar</a>
+                                        <a href="{{ route('creations.edit', $creation->id) }}">Evaluar</a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -11,25 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('innovations', function (Blueprint $table) {
+        Schema::create('creations', function (Blueprint $table) {
             $table->id();
             $table->string('rol_autor');
             $table->string('categoria_autor')->nullable();;
             $table->string('titulo');
-            $table->text('descripcion');
-            $table->text('proceso');
-            $table->string('url');
+            $table->text('tematica');
+            $table->text('problematica');
             $table->string('presentacion');
             $table->string('tipo_presentacion');
             $table->string('incrustable');
-            $table->string('innovador');
+            $table->string('cocreador');
             $table->string('identificación');
             $table->string('email');
             $table->string('perfil_instagram')->nullable();;
             $table->string('telefono');
             $table->string('vinculacion')->nullable();
             $table->string('dependencia')->nullable();
-            $table->string('dependencia_aliada')->nullable();
             $table->string('facultad')->nullable();
             $table->string('programa')->nullable();
             $table->string('colegio')->nullable();
@@ -47,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('innovations');
+        Schema::dropIfExists('creations');
     }
 };
