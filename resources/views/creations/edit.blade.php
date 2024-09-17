@@ -271,9 +271,7 @@
                             <div class="p-4 rounded-md shadow-md">
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
 
-                                <p class="mb-2"><strong>Nombre del creador:</strong> {{ $creation->cocreador }}
-                                </p>
-
+                                @if (!empty($creation->tematica))
                                 <p class="mb-2">
                                     <strong>Temática:</strong>
                                     {{ Str::limit($creation->tematica, 300) }}
@@ -286,6 +284,7 @@
                                         </a>
                                     @endif
                                 </p>
+                                @endif
 
 
 
@@ -405,7 +404,7 @@
                             <!-- Datos del Innovador -->
                             <div class="p-4 rounded-md shadow-md">
                                 <h2 class="text-2xl font-medium mb-4">Datos del Innovador</h2>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                                     <div>
                                         <p><strong>Nombre:</strong> {{ $creation->cocreador }}</p>
                                         <p class="whitespace-nowrap truncate max-w-xs"><strong>Correo: </strong><a
@@ -414,7 +413,12 @@
                                         </p>
                                     </div>
                                     <div>
-                                        <p><strong>Colegio:</strong> {{ $creation->colegio }}</p>
+                                        @if (!empty($creation->colegio))
+                                            <p><strong>Colegio:</strong> {{ $creation->colegio }}</p>
+                                        @endif
+                                        @if (!empty($creation->dependencia))
+                                            <p><strong>Dependencia:</strong> {{ $creation->dependencia }}</p>
+                                        @endif
                                     </div>
                                     <div>
                                         @if (!empty($creation->facultad))
@@ -423,9 +427,7 @@
                                         @if (!empty($creation->programa))
                                             <p><strong>Programa Académico:</strong> {{ $creation->programa }}</p>
                                         @endif
-                                        @if (!empty($creation->dependencia))
-                                            <p><strong>Dependencia:</strong> {{ $creation->dependencia }}</p>
-                                        @endif
+                                        
                                     </div>
                                 </div>
                             </div>

@@ -243,9 +243,9 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'innovador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('creations.index', ['sort_by' => 'cocreador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Creador
-                                        @if($sortBy == 'innovador')
+                                        @if($sortBy == 'cocreador')
                                             @if($sortDirection == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
                                             @else
