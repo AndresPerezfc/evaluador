@@ -237,7 +237,7 @@
                             @if (!empty($innovation->incrustable))
                                 {!! $innovation->incrustable !!}
                             @else
-                                <p class="text-center text-gray-500">Sin video de presentación</p>
+                                <p class="text-center text-gray-500">Sin video de presentación <br> {{$innovation->presentacion}}</p>
                             @endif
                         </div>
 
