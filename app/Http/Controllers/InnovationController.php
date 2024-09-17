@@ -15,18 +15,19 @@ class InnovationController extends Controller
      */
     public function index()
     {
-        $innovations = Innovation::orderBy('puntaje', 'desc')->get();
+        $innovations = Innovation::whereIn('category_id', [1, 3])
+        ->orderBy('puntaje', 'desc')
+        ->get();
 
         foreach ($innovations as $innovation) {
             $innovation->evaluaciones_por_usuario = Evaluation::where('innovation_id', $innovation->id)
                 ->distinct('user_id')
                 ->count('user_id');
 
-
-                // Verificar si el usuario actual ha evaluado esta innovación
-        $innovation->evaluado_por_usuario_actual = Evaluation::where('innovation_id', $innovation->id)
-        ->where('user_id', Auth::user()->id)
-        ->exists();
+            // Verificar si el usuario actual ha evaluado esta innovación
+            $innovation->evaluado_por_usuario_actual = Evaluation::where('innovation_id', $innovation->id)
+                ->where('user_id', Auth::user()->id)
+                ->exists();
         }
 
         return view('innovations.index', compact('innovations'));
@@ -61,7 +62,6 @@ class InnovationController extends Controller
      */
     public function edit(Innovation $innovation)
     {
-
         // Obtener los criterios asociados a la categoría de la innovación
         $criterios = Criterio::where('category_id', $innovation->category_id)->get();
 
@@ -69,7 +69,7 @@ class InnovationController extends Controller
         $evaluaciones = Evaluation::where('innovation_id', $innovation->id)
             ->where('user_id', Auth::user()->id)
             ->get()
-            ->keyBy('criterio_id');  // Organiza las evaluaciones por criterio
+            ->keyBy('criterio_id'); // Organiza las evaluaciones por criterio
 
         return view('innovations.edit', compact('innovation', 'criterios', 'evaluaciones'));
     }
@@ -104,15 +104,14 @@ class InnovationController extends Controller
                 [
                     'puntaje' => $criterioData['puntaje'],
                     'comentario' => $criterioData['comentario'] ?? null,
-                ]
+                ],
             );
 
             // Sumar el puntaje ponderado al total usando el score del criterio
             $puntajeUsuario += $criterioData['puntaje'];
         }
 
-        $totalPuntajeActual = Evaluation::where('innovation_id', $innovation->id)
-            ->sum('puntaje');
+        $totalPuntajeActual = Evaluation::where('innovation_id', $innovation->id)->sum('puntaje');
 
         // Obtener las evaluaciones de esta innovación, agrupadas por usuario
         $evaluacionesPorUsuario = Evaluation::where('innovation_id', $innovation->id)
@@ -129,8 +128,7 @@ class InnovationController extends Controller
         $innovation->save();
 
         // Agregar un mensaje de éxito a la sesión
-        return redirect()->route('innovations.index')
-            ->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
+        return redirect()->route('innovations.index')->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
     }
 
     /**
