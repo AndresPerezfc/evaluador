@@ -485,10 +485,12 @@
 
                             <!-- Botón Guardar -->
                             <div class="text-center mb-6">
+                                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
                                 <button type="submit"
                                     class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                                     Guardar Evaluación
                                 </button>
+                                @endif
                             </div>
                         </form>
                     </div>

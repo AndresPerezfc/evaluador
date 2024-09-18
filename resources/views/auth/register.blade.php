@@ -1,7 +1,8 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
+             <!-- <x-authentication-card-logo /> -->
+           <img src="{{ asset('images/logo.png') }}" class="h-20 me-3" alt="Logo innovafest" />
         </x-slot>
 
         <x-validation-errors class="mb-4" />
