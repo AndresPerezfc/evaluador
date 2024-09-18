@@ -12,7 +12,7 @@
                     <!-- Primera columna con imagen -->
                     <a href="/creations">
                         <div class="relative">
-                            <img src="{{ asset('images/cocreemos.png') }}" alt="Categoría 1" class="w-full h-auto rounded-lg shadow-lg hover:opacity-75 transition duration-300">
+                            <img src="{{ asset('images/cocreemos.png') }}" alt="cocreemos" class="w-full h-auto rounded-lg shadow-lg hover:opacity-75 transition duration-300">
                             <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition duration-300 rounded-lg">
                                 <span class="text-white text-2xl font-bold">Co-Creemos</span>
                             </div>
@@ -29,8 +29,8 @@
                         </div>
                     </a>
 
-                    <!-- Segunda columna con imagen -->
-                    <a href="/innovations">
+                    <!-- tercera columna con imagen -->
+                    <a href="/videos">
                         <div class="relative">
                             <img src="{{ asset('images/mejorvideo.png') }}" alt="Categoría 2" class="w-full h-auto rounded-lg shadow-lg hover:opacity-75 transition duration-300">
                             <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition duration-300 rounded-lg">
