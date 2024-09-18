@@ -46,12 +46,12 @@
                         </svg>
                     </button>
                     <a href="/" class="flex ms-2 md:me-24 bg-white rounded-md">
-                        <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
+                        <img src="{{ asset('images/logo.png') }}" class="h-12 me-3" alt="Logo innovafest" />
                     </a>
                 </div>
                 <!-- Título centrado -->
                 <div class="flex-grow">
-                    <h1 class="text-2xl ml-7 text-white font-semibold">
+                    <h1 class="text-xl ml-7 text-white font-semibold">
                         {{ $video->titulo }}
                     </h1>
                 </div>
@@ -220,7 +220,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
                         <!-- Columna 1: Video de presentación -->
-                        <div class="aspect-w-16 aspect-h-9 p-2 rounded-md shadow-md flex items-center justify-center">
+                        <div class="aspect-w-16 aspect-h-9 p-2 rounded-md flex items-center justify-center">
                             @if (!empty($video->incrustable))
                                 {!! $video->incrustable !!}
                             @else
@@ -233,12 +233,12 @@
                         <div class="flex flex-col justify-between space-y-6">
                             <!-- Puntaje Actual -->
                             <div class="grid grid-cols-2 gap-4">
-                                <div class="p-4 rounded-md shadow-md">
+                                <div class="p-4 rounded-md shadow-sm">
                                     <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
                                     @php
                                         $puntaje = $video->puntaje;
                                         $textColorClass = 'text-red-500'; // Valor por defecto
-                                
+
                                         if ($puntaje >= 80) {
                                             $textColorClass = 'text-green-600';
                                         } elseif ($puntaje > 49) {
@@ -250,33 +250,33 @@
                                     </div>
                                 </div>
 
-                                <div class="p-4 rounded-md shadow-md">
+                                <div class="p-4 rounded-md shadow-sm">
                                     <h2 class="text-2xl font-medium mb-2">Rol</h2>
                                     <div class="text-2xl font-bold text-green-600">
                                         {{ $video->rol_autor }}
                                     </div>
                                 </div>
-                                
+
                             </div>
 
 
                             <!-- Datos de la Innovación -->
-                            <div class="p-4 rounded-md shadow-md">
+                            <div class="p-4 rounded-md shadow-sm">
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
 
                                 @if (!empty($video->proposito))
-                                <p class="mb-2">
-                                    <strong>Propósito:</strong>
-                                    {{ Str::limit($video->proposito, 300) }}
+                                    <p class="mb-2">
+                                        <strong>Propósito:</strong>
+                                        {{ Str::limit($video->proposito, 300) }}
 
-                                    @if (strlen($video->proposito) > 300)
-                                        <a href="#" class="text-blue-600 hover:underline"
-                                            data-modal-target="#descriptionModal-{{ $video->id }}"
-                                            data-modal-toggle="descriptionModal-{{ $video->id }}">
-                                            Ver más
-                                        </a>
-                                    @endif
-                                </p>
+                                        @if (strlen($video->proposito) > 300)
+                                            <a href="#" class="text-blue-600 hover:underline"
+                                                data-modal-target="#descriptionModal-{{ $video->id }}"
+                                                data-modal-toggle="descriptionModal-{{ $video->id }}">
+                                                Ver más
+                                            </a>
+                                        @endif
+                                    </p>
                                 @endif
 
 
@@ -328,20 +328,20 @@
                                     </div>
                                 </div>
 
-                                
-                                @if (!empty($video->publico_objetivo))
-                                <p>
-                                    <strong>Público objetivo:</strong>
-                                    {{ Str::limit($video->publico_objetivo, 300) }}
 
-                                    @if (strlen($video->publico_objetivo) > 300)
-                                        <a href="#" class="text-blue-600 hover:underline"
-                                            data-modal-target="#procesoModal-{{ $video->id }}"
-                                            data-modal-toggle="procesoModal-{{ $video->id }}">
-                                            Ver más
-                                        </a>
-                                    @endif
-                                </p>
+                                @if (!empty($video->publico_objetivo))
+                                    <p>
+                                        <strong>Público objetivo:</strong>
+                                        {{ Str::limit($video->publico_objetivo, 300) }}
+
+                                        @if (strlen($video->publico_objetivo) > 300)
+                                            <a href="#" class="text-blue-600 hover:underline"
+                                                data-modal-target="#procesoModal-{{ $video->id }}"
+                                                data-modal-toggle="procesoModal-{{ $video->id }}">
+                                                Ver más
+                                            </a>
+                                        @endif
+                                    </p>
                                 @endif
 
                                 <!-- Modal -->
@@ -395,7 +395,7 @@
                             </div>
 
                             <!-- Datos del Innovador -->
-                            <div class="p-4 rounded-md shadow-md">
+                            <div class="p-4 rounded-md shadow-sm">
                                 <h2 class="text-2xl font-medium mb-4">Datos del Innovador</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                                     <div>
@@ -417,7 +417,12 @@
                                         @if (!empty($video->ciudad))
                                             <p><strong>Ciudad:</strong> {{ $video->ciudad }}</p>
                                         @endif
-                                        
+
+                                    </div>
+                                    <div>
+                                        @if (!empty($video->coautor))
+                                            <p><strong>Coautor(es):</strong> {{ $video->coautor }}</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -428,8 +433,7 @@
                     <div class="container mx-auto my-2 px-6 bg-white rounded-lg">
 
                         <!-- Formulario de Evaluación -->
-                        <form action="{{ route('videos.update', $video->id) }}" method="POST"
-                            class="space-y-6">
+                        <form action="{{ route('videos.update', $video->id) }}" method="POST" class="space-y-6">
                             @csrf
                             @method('PUT')
 
@@ -486,24 +490,79 @@
                             <!-- Botón Guardar -->
                             <div class="text-center mb-6">
                                 @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
-                                <button type="submit"
-                                    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                    Guardar Evaluación
-                                </button>
+                                    <button type="submit"
+                                        class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                        Guardar Evaluación
+                                    </button>
                                 @endif
                             </div>
                         </form>
                     </div>
+
                 </div>
                 {{-- Contenido --}}
 
+
+                @php
+                    // ID actual de la innovación (puede venir del modelo o de la ruta)
+                    $currentId = $video->id;
+
+                    // Buscar el siguiente ID mayor que el actual (para el botón de "Siguiente")
+                    $nextInnovation = \App\Models\Video::where('id', '>', $currentId)->orderBy('id', 'asc')->first();
+
+                    // Buscar el anterior ID menor que el actual (para el botón de "Anterior")
+                    $prevInnovation = \App\Models\Video::where('id', '<', $currentId)->orderBy('id', 'desc')->first();
+
+                    // Buscar el primer y último ID existente
+                    $firstInnovation = \App\Models\Video::orderBy('id', 'asc')->first();
+                    $lastInnovation = \App\Models\Video::orderBy('id', 'desc')->first();
+
+                    // Lógica para el botón "Siguiente"
+                    if ($nextInnovation) {
+                        $nextUrl = '/videos/' . $nextInnovation->id . '/edit';
+                        $buttonText = 'Siguiente';
+                    } else {
+                        $nextUrl = '/videos/' . $firstInnovation->id . '/edit';
+                        $buttonText = 'Volver al inicio';
+                    }
+
+                    // Lógica para el botón "Anterior"
+                    if ($prevInnovation) {
+                        $prevUrl = '/videos/' . $prevInnovation->id . '/edit';
+                        $prevButtonText = 'Anterior';
+                    } else {
+                        $prevUrl = '/videos/' . $lastInnovation->id . '/edit';
+                        $prevButtonText = 'Ir al último';
+                    }
+                @endphp
+
+
+
+                <div class=""
+                    style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f8f9fa; padding: 15px; border-top: 2px solid #e0e0e0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;">
+
+                    <a href="{{ $prevUrl }}"
+                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-2 text-center">
+                        {{ $prevButtonText }}
+                    </a>
+
+                    <a href="{{ $nextUrl }}"
+                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-2 text-center">
+                        {{ $buttonText }}
+                    </a>
+                </div>
+
             </div>
+
         </div>
+
     </div>
 
 
     <div x-cloak x-show="open" x-on:click="open = false"
         class="bg-gray-900 bg-opacity-50 fixed inset-0 z-30 sm:hidden"></div>
+
+
 
     @stack('modals')
 

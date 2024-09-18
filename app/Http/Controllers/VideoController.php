@@ -14,12 +14,12 @@ class VideoController extends Controller
     public function index(Request $request)
     {
         // Obtener los parámetros de ordenamiento, con valores por defecto
-        $sortBy = $request->query('sort_by', 'puntaje'); // Por defecto, ordena por 'puntaje'
-        $sortDirection = $request->query('sort_direction', 'desc'); // Por defecto, orden descendente
+        $sortBy = $request->query('sort_by', 'id'); // Por defecto, ordena por 'puntaje'
+        $sortDirection = $request->query('sort_direction', 'asc'); // Por defecto, orden descendente
 
         // Validar que el valor de $sortBy sea uno de los permitidos (titulo, innovador, puntaje)
         if (!in_array($sortBy, ['titulo', 'innovador', 'puntaje', 'rol_autor'])) {
-            $sortBy = 'puntaje';
+            $sortBy = 'id';
         }
 
         // Validar que la dirección de orden sea válida (asc o desc)
