@@ -119,13 +119,13 @@
                 'name' => 'Co-creemos',
                 'icon' => 'fa-solid fa-people-group',
                 'active' => false,
-                'route' => '/creations',
+                'route' => '#',
             ],
 
             [
                 'name' => 'Tus Innovaciones',
                 'icon' => 'fa-solid fa-lightbulb',
-                'route' => '/innovations',
+                'route' => '#',
                 'active' => false,
             ],
 
@@ -149,6 +149,7 @@
             <ul class="space-y-2 font-medium">
 
                 @foreach ($links as $link)
+                
                     <li>
 
                         @isset($link['header'])

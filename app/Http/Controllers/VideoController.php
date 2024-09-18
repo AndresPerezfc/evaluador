@@ -29,6 +29,7 @@ class VideoController extends Controller
 
         // Obtener las innovaciones con ordenamiento dinámico
         $videos = Video::where('category_id', 4)
+            ->whereNotIn('id', [5, 7, 8, 10]) // Excluir los IDs específicos
             ->orderBy($sortBy, $sortDirection) // Ordenar según los parámetros de usuario
             ->get();
 

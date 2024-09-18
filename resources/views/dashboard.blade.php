@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6 text-center">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Primera columna con imagen -->
-                    <a href="/creations">
+                    <a href="#">
                         <div class="relative">
                             <img src="{{ asset('images/cocreemos.png') }}" alt="cocreemos" class="w-full h-auto rounded-lg shadow-lg hover:opacity-75 transition duration-300">
                             <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition duration-300 rounded-lg">
@@ -20,7 +20,7 @@
                     </a>
     
                     <!-- Segunda columna con imagen -->
-                    <a href="/innovations">
+                    <a href="#">
                         <div class="relative">
                             <img src="{{ asset('images/innovaciones.png') }}" alt="Categoría 2" class="w-full h-auto rounded-lg shadow-lg hover:opacity-75 transition duration-300">
                             <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition duration-300 rounded-lg">
