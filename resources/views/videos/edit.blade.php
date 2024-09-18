@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $innovation->titulo }} -Tus Innovaciones</title>
+    <title>{{ $video->titulo }} - Mejor video educativo nacional</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,7 +29,7 @@
     isOpen: false
 }":class="{'overflow-hidden': open}" class="sm:overflow-auto">
 
-    <nav style="background: linear-gradient(90deg, #40DEA9 10%, #B6E982 100%);"
+    <nav style="background: linear-gradient(90deg, #39B5E7 10%, #13B5C9 100%);"
         class="fixed top-0 z-50 w-full border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -45,14 +45,14 @@
                             </path>
                         </svg>
                     </button>
-                    <a href="/" class="flex ms-2 md:me-24">
+                    <a href="/" class="flex ms-2 md:me-24 bg-white rounded-md">
                         <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
                     </a>
                 </div>
                 <!-- Título centrado -->
                 <div class="flex-grow">
-                    <h1 class="text-3xl ml-7 text-white font-semibold">
-                        {{ $innovation->titulo }}
+                    <h1 class="text-2xl ml-7 text-white font-semibold">
+                        {{ $video->titulo }}
                     </h1>
                 </div>
                 <div class="flex items-center">
@@ -126,14 +126,14 @@
                 'name' => 'Tus Innovaciones',
                 'icon' => 'fa-solid fa-lightbulb',
                 'route' => '/innovations',
-                'active' => true,
+                'active' => false,
             ],
 
             [
                 'name' => 'Mejor video educativo',
                 'icon' => 'fa-solid fa-chalkboard-user',
                 'route' => '/videos',
-                'active' => false,
+                'active' => true,
             ],
         ];
     @endphp
@@ -221,11 +221,11 @@
 
                         <!-- Columna 1: Video de presentación -->
                         <div class="aspect-w-16 aspect-h-9 p-2 rounded-md shadow-md flex items-center justify-center">
-                            @if (!empty($innovation->incrustable))
-                                {!! $innovation->incrustable !!}
+                            @if (!empty($video->incrustable))
+                                {!! $video->incrustable !!}
                             @else
                                 <p class="text-center text-gray-500">Sin video de presentación <br>
-                                    {{ $innovation->presentacion }}</p>
+                                    {{ $video->url_video }}</p>
                             @endif
                         </div>
 
@@ -236,7 +236,7 @@
                                 <div class="p-4 rounded-md shadow-md">
                                     <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
                                     @php
-                                        $puntaje = $innovation->puntaje;
+                                        $puntaje = $video->puntaje;
                                         $textColorClass = 'text-red-500'; // Valor por defecto
                                 
                                         if ($puntaje >= 80) {
@@ -253,39 +253,37 @@
                                 <div class="p-4 rounded-md shadow-md">
                                     <h2 class="text-2xl font-medium mb-2">Rol</h2>
                                     <div class="text-2xl font-bold text-green-600">
-                                        {{ $innovation->rol_autor }}
+                                        {{ $video->rol_autor }}
                                     </div>
                                 </div>
+                                
                             </div>
 
 
                             <!-- Datos de la Innovación -->
                             <div class="p-4 rounded-md shadow-md">
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
-                                <p class="mb-2"><a href="{{ $innovation->url }}"
-                                        class="text-blue-500 hover:underline" target="_blank">Enlace a la
-                                        innovación</a></p>
-                                <p class="mb-2"><strong>Nombre del Innovador:</strong> {{ $innovation->innovador }}
-                                </p>
 
+                                @if (!empty($video->proposito))
                                 <p class="mb-2">
-                                    <strong>Descripción:</strong>
-                                    {{ Str::limit($innovation->descripcion, 300) }}
+                                    <strong>Propósito:</strong>
+                                    {{ Str::limit($video->proposito, 300) }}
 
-                                    @if (strlen($innovation->descripcion) > 300)
+                                    @if (strlen($video->proposito) > 300)
                                         <a href="#" class="text-blue-600 hover:underline"
-                                            data-modal-target="#descriptionModal-{{ $innovation->id }}"
-                                            data-modal-toggle="descriptionModal-{{ $innovation->id }}">
+                                            data-modal-target="#descriptionModal-{{ $video->id }}"
+                                            data-modal-toggle="descriptionModal-{{ $video->id }}">
                                             Ver más
                                         </a>
                                     @endif
                                 </p>
+                                @endif
 
 
 
                                 <!-- Modal -->
-                                <div id="descriptionModal-{{ $innovation->id }}" tabindex="-1"
-                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                <div id="descriptionModal-{{ $video->id }}" tabindex="-1"
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 items-center justify-center">
                                     <div class="relative max-w-xl max-h-full w-full">
                                         <!-- Modal content -->
                                         <div
@@ -294,11 +292,11 @@
                                             <div
                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                                                 <h3 class="text-xl font-medium text-gray-900">
-                                                    Descripción completa
+                                                    Propósito
                                                 </h3>
                                                 <button type="button"
                                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                                                    data-modal-hide="descriptionModal-{{ $innovation->id }}">
+                                                    data-modal-hide="descriptionModal-{{ $video->id }}">
                                                     <svg class="w-3 h-3" aria-hidden="true"
                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 14 14">
@@ -313,14 +311,14 @@
                                             <!-- Modal body with scroll -->
                                             <div class="p-4 md:p-5 space-y-4 overflow-y-auto max-h-80">
                                                 <p class="text-base leading-relaxed text-gray-500">
-                                                    {{ $innovation->descripcion }}
+                                                    {{ $video->proposito }}
                                                 </p>
                                             </div>
 
                                             <!-- Modal footer -->
                                             <div
                                                 class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-                                                <button data-modal-hide="descriptionModal-{{ $innovation->id }}"
+                                                <button data-modal-hide="descriptionModal-{{ $video->id }}"
                                                     type="button"
                                                     class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
                                                     Cerrar
@@ -330,23 +328,25 @@
                                     </div>
                                 </div>
 
-
+                                
+                                @if (!empty($video->publico_objetivo))
                                 <p>
-                                    <strong>Proceso de Creación:</strong>
-                                    {{ Str::limit($innovation->proceso, 300) }}
+                                    <strong>Público objetivo:</strong>
+                                    {{ Str::limit($video->publico_objetivo, 300) }}
 
-                                    @if (strlen($innovation->proceso) > 300)
+                                    @if (strlen($video->publico_objetivo) > 300)
                                         <a href="#" class="text-blue-600 hover:underline"
-                                            data-modal-target="#procesoModal-{{ $innovation->id }}"
-                                            data-modal-toggle="procesoModal-{{ $innovation->id }}">
+                                            data-modal-target="#procesoModal-{{ $video->id }}"
+                                            data-modal-toggle="procesoModal-{{ $video->id }}">
                                             Ver más
                                         </a>
                                     @endif
                                 </p>
+                                @endif
 
                                 <!-- Modal -->
-                                <div id="procesoModal-{{ $innovation->id }}" tabindex="-1"
-                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                <div id="procesoModal-{{ $video->id }}" tabindex="-1"
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 items-center justify-center">
                                     <div class="relative max-w-xl max-h-full w-full">
                                         <!-- Modal content -->
                                         <div
@@ -355,11 +355,11 @@
                                             <div
                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                                                 <h3 class="text-xl font-medium text-gray-900">
-                                                    Proceso completo
+                                                    Público objetivo
                                                 </h3>
                                                 <button type="button"
                                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                                                    data-modal-hide="procesoModal-{{ $innovation->id }}">
+                                                    data-modal-hide="procesoModal-{{ $video->id }}">
                                                     <svg class="w-3 h-3" aria-hidden="true"
                                                         xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 14 14">
@@ -374,14 +374,14 @@
                                             <!-- Modal body with scroll -->
                                             <div class="p-4 md:p-5 space-y-4 overflow-y-auto max-h-80">
                                                 <p class="text-base leading-relaxed text-gray-500">
-                                                    {{ $innovation->proceso }}
+                                                    {{ $video->publico_objetivo }}
                                                 </p>
                                             </div>
 
                                             <!-- Modal footer -->
                                             <div
                                                 class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-                                                <button data-modal-hide="procesoModal-{{ $innovation->id }}"
+                                                <button data-modal-hide="procesoModal-{{ $video->id }}"
                                                     type="button"
                                                     class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
                                                     Cerrar
@@ -397,30 +397,27 @@
                             <!-- Datos del Innovador -->
                             <div class="p-4 rounded-md shadow-md">
                                 <h2 class="text-2xl font-medium mb-4">Datos del Innovador</h2>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                                     <div>
-                                        <p><strong>Nombre:</strong> {{ $innovation->innovador }}</p>
+                                        <p><strong>Nombre:</strong> {{ $video->innovador }}</p>
                                         <p class="whitespace-nowrap truncate max-w-xs"><strong>Correo: </strong><a
                                                 class="text-blue-600 hover:underline "
-                                                href= "mailto:{{ $innovation->email }}">{{ $innovation->email }}</a>
+                                                href= "mailto:{{ $video->email }}">{{ $video->email }}</a>
                                         </p>
                                     </div>
                                     <div>
-                                        @if (!empty($innovation->vinculacion))
-                                            <p><strong>Vinculación:</strong> {{ $innovation->vinculacion }}</p>
+                                        @if (!empty($video->institucion_educativa))
+                                            <p><strong>Colegio:</strong> {{ $video->institucion_educativa }}</p>
                                         @endif
-                                        <p><strong>Categoría:</strong> {{ $innovation->categoria_autor }}</p>
                                     </div>
                                     <div>
-                                        @if (!empty($innovation->facultad))
-                                            <p><strong>Facultad:</strong> {{ $innovation->facultad }}</p>
+                                        @if (!empty($video->departamento))
+                                            <p><strong>Departamento:</strong> {{ $video->departamento }}</p>
                                         @endif
-                                        @if (!empty($innovation->programa))
-                                            <p><strong>Programa Académico:</strong> {{ $innovation->programa }}</p>
+                                        @if (!empty($video->ciudad))
+                                            <p><strong>Ciudad:</strong> {{ $video->ciudad }}</p>
                                         @endif
-                                        @if (!empty($innovation->dependencia))
-                                            <p><strong>Dependencia:</strong> {{ $innovation->dependencia }}</p>
-                                        @endif
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -431,7 +428,7 @@
                     <div class="container mx-auto my-2 px-6 bg-white rounded-lg">
 
                         <!-- Formulario de Evaluación -->
-                        <form action="{{ route('innovations.update', $innovation->id) }}" method="POST"
+                        <form action="{{ route('videos.update', $video->id) }}" method="POST"
                             class="space-y-6">
                             @csrf
                             @method('PUT')
@@ -483,7 +480,7 @@
                             <h3 class="text-2xl font-medium">Comentario general</h3>
                             <div class="flex items-center">
                                 <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
-                                    class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario_general', $innovation->comentario_general ?? '') }}</textarea>
+                                    class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario_general', $video->comentario_general ?? '') }}</textarea>
                             </div>
 
                             <!-- Botón Guardar -->

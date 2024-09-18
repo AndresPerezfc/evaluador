@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Creation;
-use App\Models\EvaluationCreation;
+use App\Models\Video;
+use App\Models\EvaluationVideo;
 use App\Models\Criterio;
 use Illuminate\Support\Facades\Auth;
 
-class CreationController extends Controller
+class VideoController extends Controller
 {
     
     public function index(Request $request)
@@ -28,62 +28,58 @@ class CreationController extends Controller
         }
 
         // Obtener las innovaciones con ordenamiento dinámico
-        $creations = Creation::where('category_id', 2)
+        $videos = Video::where('category_id', 4)
             ->orderBy($sortBy, $sortDirection) // Ordenar según los parámetros de usuario
             ->get();
 
-        foreach ($creations as $creation) {
-            $creation->evaluaciones_por_usuario = EvaluationCreation::where('creation_id', $creation->id)
+        foreach ($videos as $video) {
+            $video->evaluaciones_por_usuario = EvaluationVideo::where('video_id', $video->id)
                 ->distinct('user_id')
                 ->count('user_id');
 
-            $creation->evaluado_por_usuario_actual = EvaluationCreation::where('creation_id', $creation->id)
+            $video->evaluado_por_usuario_actual = EvaluationVideo::where('video_id', $video->id)
                 ->where('user_id', Auth::user()->id)
                 ->exists();
         }
 
         // Pasar los datos a la vista, incluyendo sortBy y sortDirection
-        return view('creations.index', compact('creations', 'sortBy', 'sortDirection'));
+        return view('videos.index', compact('videos', 'sortBy', 'sortDirection'));
     }
 
-
+    
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+       
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
-        //
+        
     }
 
-    public function edit(Creation $creation)
+
+    public function edit(Video $video)
     {
         // Obtener los criterios asociados a la categoría de la innovación
-        $criterios = Criterio::where('category_id', $creation->category_id)->get();
+        $criterios = Criterio::where('category_id', $video->category_id)->get();
 
         // Obtener las evaluaciones anteriores hechas por el usuario para esta innovación
-        $evaluaciones = EvaluationCreation::where('creation_id', $creation->id)
+        $evaluaciones = EvaluationVideo::where('video_id', $video->id)
             ->where('user_id', Auth::user()->id)
             ->get()
             ->keyBy('criterio_id'); // Organiza las evaluaciones por criterio
 
-        return view('creations.edit', compact('creation', 'criterios', 'evaluaciones'));
+        return view('videos.edit', compact('video', 'criterios', 'evaluaciones'));
     }
 
-  
-    public function update(Request $request, Creation $creation)
+
+    public function update(Request $request, Video $video)
     {
 
          // Validar los datos de la solicitud
@@ -103,12 +99,12 @@ class CreationController extends Controller
             $criterio = Criterio::find($criterioData['id']);
 
             // Crear o actualizar la evaluación del usuario para este criterio y la innovación
-            $evaluation = EvaluationCreation::updateOrCreate(
+            $evaluation = EvaluationVideo::updateOrCreate(
                 [
                     'user_id' => Auth::user()->id,
-                    'creation_id' => $creation->id,
+                    'video_id' => $video->id,
                     'criterio_id' => $criterio->id,
-                    'tipo' => 'creations'
+                    'tipo' => 'video'
                 ],
                 [
                     'puntaje' => $criterioData['puntaje'],
@@ -121,36 +117,36 @@ class CreationController extends Controller
         }
 
         // Actualizar el comentario general
-        $creation->comentario_general = $validated['comentario_general'] ?? null;
+        $video->comentario_general = $validated['comentario_general'] ?? null;
 
-        $totalPuntajeActual = EvaluationCreation::where('creation_id', $creation->id)->sum('puntaje');
+        $totalPuntajeActual = EvaluationVideo::where('video_id', $video->id)->sum('puntaje');
 
         // Obtener las evaluaciones de esta innovación, agrupadas por usuario
-        $evaluacionesPorUsuario = EvaluationCreation::where('creation_id', $creation->id)
+        $evaluacionesPorUsuario = EvaluationVideo::where('video_id', $video->id)
             ->distinct('user_id')
             ->count('user_id'); // Contar los usuarios únicos que han evaluado esta innovación
 
         // Calcular el promedio dividiendo entre el número de usuarios únicos que evaluaron la innovación
         if ($evaluacionesPorUsuario > 0) {
-            $creation->puntaje = $totalPuntajeActual / $evaluacionesPorUsuario;
+            $video->puntaje = $totalPuntajeActual / $evaluacionesPorUsuario;
         } else {
-            $creation->puntaje = $totalPuntajeActual; // Si es la primera evaluación
+            $video->puntaje = $totalPuntajeActual; // Si es la primera evaluación
         }
 
-        if ($creation->extra_puntos && $creation->puntaje < 100) {
-            $creation->puntaje = $creation->puntaje + 10;
+        if ($video->extra_puntos && $video->puntaje < 100) {
+            $video->puntaje = $video->puntaje + 10;
         }
 
-        $creation->save();
+        $video->save();
 
         // Agregar un mensaje de éxito a la sesión
-        return redirect()->route('creations.index')->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
+        return redirect()->route('videos.index')->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
         
     }
 
 
     public function destroy(string $id)
     {
-        
+        //
     }
 }

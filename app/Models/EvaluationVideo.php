@@ -5,22 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EvaluationCreation extends Model
+class EvaluationVideo extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'creation_id',
+        'video_id',
         'criterio_id',
         'puntaje',
         'comentario',
         'tipo'
     ];
 
-    public function creation()
+    public function video()
     {
-        return $this->belongsTo(Creation::class);
+        return $this->belongsTo(Video::class);
     }
 
     public function criterio()

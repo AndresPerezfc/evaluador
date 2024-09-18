@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Co-creemos</title>
+    <title>Mejor Video educativo</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -31,7 +31,7 @@
 
 
 
-    <nav style="background: linear-gradient(75deg, #FF8957 23%, #FF5F69 100%);"  class="fixed top-0 z-50 w-full border-b border-gray-200">
+    <nav style="background: linear-gradient(90deg, #39B5E7 10%, #13B5C9 100%);"  class="fixed top-0 z-50 w-full border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -46,14 +46,14 @@
                             </path>
                         </svg>
                     </button>
-                    <a href="/" class="flex ms-2 md:me-24">
+                    <a href="/" class="flex ms-2 md:me-24 bg-white rounded-md">
                         <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
                     </a>
                 </div>
                 <!-- Título centrado -->
                 <div class="flex-grow">
                     <h1 class="text-3xl ml-7 text-white font-semibold">
-                        Co-creemos
+                        Mejor Video educativo nacional
                     </h1>
                 </div>
                 <div class="flex items-center">
@@ -119,8 +119,8 @@
             [
                 'name' => 'Co-creemos',
                 'icon' => 'fa-solid fa-people-group',
-                'active' => true,
-                'route' => '#'
+                'active' => false,
+                'route' => '/creations'
             ],
 
             [
@@ -133,8 +133,8 @@
             [
                 'name' => 'Mejor video educativo',
                 'icon' => 'fa-solid fa-chalkboard-user',
-                'route' => '/videos',
-                'active' => false,
+                'route' => '#',
+                'active' => true,
             ],        
         ];
     @endphp
@@ -231,7 +231,7 @@
                                     #
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'titulo', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('videos.index', ['sort_by' => 'titulo', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Título
                                         @if($sortBy == 'titulo')
                                             @if($sortDirection == 'asc')
@@ -243,9 +243,9 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'cocreador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('videos.index', ['sort_by' => 'innovador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Creador
-                                        @if($sortBy == 'cocreador')
+                                        @if($sortBy == 'innovador')
                                             @if($sortDirection == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
                                             @else
@@ -255,7 +255,7 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'rol_autor', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('videos.index', ['sort_by' => 'rol_autor', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Rol
                                         @if($sortBy == 'rol_autor')
                                             @if($sortDirection == 'asc')
@@ -267,7 +267,7 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'puntaje', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('videos.index', ['sort_by' => 'puntaje', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
                                         Puntaje
                                         @if($sortBy == 'puntaje')
                                             @if($sortDirection == 'asc')
@@ -299,46 +299,46 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($creations as $creation)
+                            @foreach ($videos as $video)
                                 <tr class="even:bg-gray-100 odd:bg-white border-b cursor-pointer hover:bg-gray-200"
-                                    data-url="{{ route('creations.edit', $creation->id) }}">
+                                    data-url="{{ route('videos.edit', $video->id) }}">
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
                                         {{ $loop->index + 1 }}
                                     </th>
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
-                                        {{ $creation->titulo }}
+                                        {{ $video->titulo }}
                                     </th>
                                     <td scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap truncate max-w-xs">
-                                        {{ $creation->cocreador }}
+                                        {{ $video->innovador }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $creation->rol_autor }}
+                                        {{ $video->rol_autor }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ number_format($creation->puntaje, 1) }}
+                                        {{ number_format($video->puntaje, 1) }}
                                     </td>
                                     <td class="px-6 py-4 items-center">
-                                        {{ $creation->evaluaciones_por_usuario }}/3
+                                        {{ $video->evaluaciones_por_usuario }}/3
                                     </td>
                                     <td class="px-6 py-4 items-center">
-                                        @if ($creation->evaluado_por_usuario_actual)
+                                        @if ($video->evaluado_por_usuario_actual)
                                         <i class="fa-regular fa-circle-check text-green-500 text-center"></i>
                                         @else
                                         <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if ($creation->extra_puntos)
+                                        @if ($video->extra_puntos)
                                         <i class="fa-solid fa-check text-green-500"></i>
                                         @else
                                         <i class="fa-solid fa-x" style="color: #d05353;"></i>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('creations.edit', $creation->id) }}">Evaluar</a>
+                                        <a href="{{ route('videos.edit', $video->id) }}">Evaluar</a>
                                     </td>
                                 </tr>
                             @endforeach

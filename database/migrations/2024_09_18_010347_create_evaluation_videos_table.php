@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evaluation_creations', function (Blueprint $table) {
+        Schema::create('evaluation_videos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('creation_id')->constrained('creations');
+            $table->foreignId('video_id')->constrained('videos');
             $table->foreignId('criterio_id')->constrained('criterios');
             $table->integer('puntaje')->default(0);
             $table->text('comentario')->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('evaluation_creations');
+        Schema::dropIfExists('evaluation_videos');
     }
 };

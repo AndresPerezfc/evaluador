@@ -133,7 +133,7 @@
             [
                 'name' => 'Mejor video educativo',
                 'icon' => 'fa-solid fa-chalkboard-user',
-                'route' => '',
+                'route' => '/videos',
                 'active' => false,
             ],        
         ];

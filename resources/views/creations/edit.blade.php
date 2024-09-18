@@ -132,7 +132,7 @@
             [
                 'name' => 'Mejor video educativo',
                 'icon' => 'fa-solid fa-chalkboard-user',
-                'route' => '',
+                'route' => '/videos',
                 'active' => false,
             ],
         ];
@@ -290,7 +290,7 @@
 
                                 <!-- Modal -->
                                 <div id="descriptionModal-{{ $creation->id }}" tabindex="-1"
-                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 items-center justify-center">
                                     <div class="relative max-w-xl max-h-full w-full">
                                         <!-- Modal content -->
                                         <div
@@ -353,7 +353,7 @@
 
                                 <!-- Modal -->
                                 <div id="procesoModal-{{ $creation->id }}" tabindex="-1"
-                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 items-center justify-center">
                                     <div class="relative max-w-xl max-h-full w-full">
                                         <!-- Modal content -->
                                         <div

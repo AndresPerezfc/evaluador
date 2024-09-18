@@ -5,29 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Creation extends Model
+class Video extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'rol_autor',
-        'categoria_autor',
         'titulo',
-        'tematica',
-        'problematica',
-        'presentacion',
+        'proposito',
+        'publico_objetivo',
+        'plataformas',
+        'url_video',
+        'tipo_presentacion',
+        'incrustable',
         'innovador',
-        'identificación',
+        'identificacion',
         'email',
-        'perfil_instagram',
         'telefono',
-        'vinculacion',
-        'dependencia',
-        'facultad',
-        'programa',
-        'colegio',
+        'rol_autor',
+        'institucion_educativa',
+        'departamento',
+        'ciudad',
         'coautor',
         'puntaje',
+        'extra_puntos',
         'comentario_general'
     ];
 
@@ -38,6 +38,6 @@ class Creation extends Model
 
     public function evaluations()
     {
-        return $this->hasMany(EvaluationCreation::class);
+        return $this->hasMany(EvaluationVideo::class);
     }
 }
