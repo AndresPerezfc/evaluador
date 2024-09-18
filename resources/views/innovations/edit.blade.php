@@ -45,7 +45,7 @@
                             </path>
                         </svg>
                     </button>
-                    <a href="/" class="flex ms-2 md:me-24">
+                    <a href="/" class="flex ms-2 md:me-24 bg-white rounded-md">
                         <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
                     </a>
                 </div>

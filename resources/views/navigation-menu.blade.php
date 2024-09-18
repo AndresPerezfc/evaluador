@@ -6,18 +6,19 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
+                        <img src="{{ asset('images/logo.png') }}" class="h-16 me-3" alt="Logo innovafest" />
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
+                <!-- Navigation Links
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Inicio') }}
                     </x-nav-link>
                 </div>
+                 -->
+                 
             </div>
-
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
