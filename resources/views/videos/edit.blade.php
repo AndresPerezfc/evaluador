@@ -328,11 +328,12 @@
 
                                 <!-- Modal -->
                                 <div id="descriptionModal-{{ $video->id }}" tabindex="-1"
-                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 items-center justify-center">
-                                    <div class="relative max-w-xl max-h-full w-full">
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                    <div class="relative w-1/2 max-h-full">
+                                        <!-- Cambiado a w-1/2 para que ocupe la mitad de la pantalla -->
                                         <!-- Modal content -->
                                         <div
-                                            class="relative bg-white max-w-2xl w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
+                                            class="relative bg-white w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
                                             <!-- Modal header -->
                                             <div
                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
