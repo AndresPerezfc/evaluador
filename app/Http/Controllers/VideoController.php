@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
-    
+
     public function index(Request $request)
     {
         // Obtener los parámetros de ordenamiento, con valores por defecto
@@ -47,22 +47,13 @@ class VideoController extends Controller
         return view('videos.index', compact('videos', 'sortBy', 'sortDirection'));
     }
 
-    
-    public function create()
-    {
-        //
-    }
 
-    public function store(Request $request)
-    {
-       
-    }
+    public function create() {}
+
+    public function store(Request $request) {}
 
 
-    public function show(string $id)
-    {
-        
-    }
+    public function show(string $id) {}
 
 
     public function edit(Video $video)
@@ -70,21 +61,44 @@ class VideoController extends Controller
         // Obtener los criterios asociados a la categoría de la innovación
         $criterios = Criterio::where('category_id', $video->category_id)->get();
 
-        // Obtener las evaluaciones anteriores hechas por el usuario para esta innovación
+        // Obtener las evaluaciones anteriores hechas por el usuario actual para esta innovación
         $evaluaciones = EvaluationVideo::where('video_id', $video->id)
             ->where('user_id', Auth::user()->id)
             ->get()
             ->keyBy('criterio_id'); // Organiza las evaluaciones por criterio
 
-        return view('videos.edit', compact('video', 'criterios', 'evaluaciones'));
+
+        // Obtener la suma total del puntaje del usuario actual
+        $evaluacionesUsuarioActual = EvaluationVideo::where('video_id', $video->id)
+            ->where('user_id', Auth::user()->id);
+
+        // Verificar si el usuario ha hecho alguna evaluación
+        if ($evaluacionesUsuarioActual->exists()) {
+            $puntajeUsuarioActual = $evaluacionesUsuarioActual->sum('puntaje');
+        } else {
+            $puntajeUsuarioActual = null; // Usuario no ha evaluado
+        }
+
+        // Obtener evaluaciones de otros usuarios para esta innovación, excluyendo al usuario actual
+        $otrasEvaluaciones = EvaluationVideo::where('video_id', $video->id)
+            ->where('user_id', '!=', Auth::user()->id) // Excluir al usuario autenticado
+            ->selectRaw('user_id, SUM(puntaje) as total_puntaje') // Sumar los puntajes por usuario
+            ->groupBy('user_id') // Agrupar por usuario
+            ->with('user') // Cargar la información del usuario que hizo la evaluación
+            ->get(); // Obtenemos las evaluaciones agrupadas y con la suma de puntajes
+
+        // Pasar las evaluaciones y los usuarios a la vista
+        return view('videos.edit', compact('video', 'criterios', 'evaluaciones', 'puntajeUsuarioActual', 'otrasEvaluaciones'));
     }
+
+
 
 
     public function update(Request $request, Video $video)
     {
 
-         // Validar los datos de la solicitud
-         $validated = $request->validate([
+        // Validar los datos de la solicitud
+        $validated = $request->validate([
             'criterios.*.id' => 'required|exists:criterios,id',
             'criterios.*.puntaje' => 'required|integer|min:0', // Valida que sea un número entero positivo
             'criterios.*.comentario' => 'nullable|string',
@@ -142,7 +156,6 @@ class VideoController extends Controller
 
         // Agregar un mensaje de éxito a la sesión
         return redirect()->route('videos.index')->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
-        
     }
 
 

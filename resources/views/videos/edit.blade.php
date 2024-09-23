@@ -149,7 +149,7 @@
             <ul class="space-y-2 font-medium">
 
                 @foreach ($links as $link)
-                
+
                     <li>
 
                         @isset($link['header'])
@@ -205,6 +205,50 @@
                     </li>
                 @endforeach
             </ul>
+
+            <ul class="pt-4 mt-4 px-2 space-y-2 font-medium border-t border-gray-200">
+
+                <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 10px"><span
+                        class="inline-flex w-6 h-6 justify-center items-center">
+
+                        @if (isset($puntajeUsuarioActual))
+                            <i class="fa-solid fa-circle-check text-green-500"></i>
+                        @else
+                            <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
+                        @endif
+                    </span> Tu evaluación</h2>
+                @if (isset($puntajeUsuarioActual))
+                    <p>Puntaje: {{ $puntajeUsuarioActual }} puntos</p>
+                @else
+                    <p>Aún no has evaluado esta innovación.</p>
+                @endif
+
+                <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
+                    <span class="inline-flex w-6 h-6 justify-center items-center">
+                        @if ($otrasEvaluaciones->isEmpty())
+                            <i class="fa-solid fa-clipboard-check text-yellow-300"></i>
+                        @else
+                            <i class="fa-solid fa-clipboard-check text-green-500"></i>
+                        @endif
+                    </span> Evaluaciones
+                </h2>
+
+                <ul class="max-w-md space-y-1 text-gray-500">
+                    @if ($otrasEvaluaciones->isEmpty())
+                        <li>
+                            <span class="text-red-500">Esta innovación aún no ha sido evaluada por otros
+                                evaluadores.</span>
+                        </li>
+                    @else
+                        @foreach ($otrasEvaluaciones as $evaluacion)
+                            <li class="border-t">
+                                <span class="font-semibold">{{ $evaluacion->user->name }}</span>:
+                                {{ $evaluacion->total_puntaje }} puntos
+                            </li>
+                        @endforeach
+                    @endif
+                </ul>
+            </ul>
         </div>
     </aside>
 
@@ -253,7 +297,7 @@
 
                                 <div class="p-4 rounded-md shadow-sm">
                                     <h2 class="text-2xl font-medium mb-2">Rol</h2>
-                                    <div class="text-2xl font-bold text-green-600">
+                                    <div class="text-2xl font-bold">
                                         {{ $video->rol_autor }}
                                     </div>
                                 </div>
@@ -431,7 +475,7 @@
                     </div>
 
                     <!-- Formulario de Evaluación -->
-                    <div class="container mx-auto my-2 px-6 bg-white rounded-lg">
+                    <div class="container mx-auto my-4 py-6 px-6 bg-white rounded-lg">
 
                         <!-- Formulario de Evaluación -->
                         <form action="{{ route('videos.update', $video->id) }}" method="POST" class="space-y-6">
@@ -488,20 +532,27 @@
                                     class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario_general', $video->comentario_general ?? '') }}</textarea>
                             </div>
 
+
                             <!-- Botón Guardar -->
-                            <div class="text-center mb-6">
+                            <div class="text-center pt-6">
                                 @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
                                     <button type="submit"
-                                        class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                        class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center">
                                         Guardar Evaluación
                                     </button>
                                 @endif
                             </div>
                         </form>
+
+
                     </div>
 
                 </div>
                 {{-- Contenido --}}
+
+                <div class="h-10">
+
+                </div>
 
 
                 @php
