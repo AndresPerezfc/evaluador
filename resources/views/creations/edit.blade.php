@@ -230,7 +230,7 @@
                         </div>
 
                         <!-- Columna 2: Datos -->
-                        <div class="flex flex-col justify-between space-y-6">
+                        <div class="flex flex-col space-y-6">
                             <!-- Puntaje Actual -->
                             <div class="grid grid-cols-3 gap-4">
                                 <div class="p-4 rounded-md shadow-md">

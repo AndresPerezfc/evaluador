@@ -318,7 +318,7 @@
                         </div>
 
                         <!-- Columna 2: Datos -->
-                        <div class="flex flex-col justify-between space-y-6">
+                        <div class="flex flex-col space-y-6">
                             <!-- Puntaje Actual -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="p-4 rounded-md shadow-sm">
@@ -637,11 +637,8 @@
         </div>
     </div>
 
-
     <div x-cloak x-show="open" x-on:click="open = false"
         class="bg-gray-900 bg-opacity-50 fixed inset-0 z-30 sm:hidden"></div>
-
-
 
     @stack('modals')
 
@@ -667,35 +664,6 @@
         });
     });
 </script>
-
-
-<script>
-    function openModaledit(evaluacion) {
-        const modal = document.getElementById('evaluationModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalContent = document.getElementById('modalContent');
-
-        modalTitle.innerText = `${evaluacion.user.name} - Detalles de Evaluación`;
-
-        let content = `<ul> `;
-        console.log(evaluacion)
-        content += '</ul>';
-        modalContent.innerHTML = content;
-
-        modal.classList.remove('hidden');
-    }
-
-    // Función para cerrar el modal
-    document.querySelectorAll('[data-modal-hide]').forEach(button => {
-        button.addEventListener('click', function() {
-            const modal = this.closest('#evaluationModal');
-            if (modal) {
-                modal.classList.add('hidden');
-            }
-        });
-    });
-</script>
-
 
 <script>
     function openModal(userId) {
