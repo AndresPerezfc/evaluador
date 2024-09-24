@@ -334,8 +334,9 @@
                                         }
                                     @endphp
                                     <div class="text-2xl font-bold {{ $textColorClass }}">
-                                        {{ number_format($puntaje, 1) }} / 100
+                                        {{ number_format($puntaje, 0) }} / 100
                                     </div>
+                                    
                                 </div>
 
                                 <div class="p-4 rounded-md shadow-sm">
@@ -347,7 +348,7 @@
                             </div>
 
                             <!-- Datos de la Innovación -->
-                            <div class="p-4 rounded-md shadow-sm">
+                            <div class="p-4 rounded-md shadow-sm"> 
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
 
                                 @if (!empty($video->proposito))
@@ -506,6 +507,21 @@
                                             <p><strong>Coautor(es):</strong> {{ $video->coautor }}</p>
                                         @endif
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Extra puntos -->
+                            <div class="p-4 rounded-md shadow-sm">
+                                <div class="grid grid-cols-1 gap-4 text-gray-700">
+                                    <div>
+                                        <p class="mb-4">
+                                            @if ($video->extra_puntos)
+                                            Esta innovación obtuvo los <span class="text-green-600">+10 puntos adicionales</span>
+                                            @else
+                                            Esta innovación <span class="text-red-500"> no obtuvo </span> los +10 puntos adicionales
+                                            @endif                             
+                                        </p>
+                                    </div> 
                                 </div>
                             </div>
                         </div>
