@@ -23,4 +23,9 @@ class Criterio extends Model
     {
         return $this->hasMany(Evaluation::class);
     }
+
+    public function videoevaluation()
+    {
+        return $this->hasMany(EvaluationVideo::class);
+    }
 }

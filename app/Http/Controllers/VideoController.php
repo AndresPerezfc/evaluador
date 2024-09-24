@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\EvaluationVideo;
 use App\Models\Criterio;
+use App\Models\VideoComment;
 use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
@@ -47,7 +48,6 @@ class VideoController extends Controller
         return view('videos.index', compact('videos', 'sortBy', 'sortDirection'));
     }
 
-
     public function create() {}
 
     public function store(Request $request) {}
@@ -60,6 +60,7 @@ class VideoController extends Controller
     {
         // Obtener los criterios asociados a la categoría de la innovación
         $criterios = Criterio::where('category_id', $video->category_id)->get();
+
 
         // Obtener las evaluaciones anteriores hechas por el usuario actual para esta innovación
         $evaluaciones = EvaluationVideo::where('video_id', $video->id)
@@ -87,16 +88,28 @@ class VideoController extends Controller
             ->with('user') // Cargar la información del usuario que hizo la evaluación
             ->get(); // Obtenemos las evaluaciones agrupadas y con la suma de puntajes
 
+
+        $detalleevaluaciones = EvaluationVideo::with('criterio', 'user')
+            ->where('video_id', $video->id)
+            ->where('user_id', '!=', Auth::user()->id)
+            ->get()
+            ->groupBy('user_id');  // Agrupar por user_id
+
+
+        // Obtener comentarios del video de la tabla video_comments
+        $comentarioEvaluacion = VideoComment::where('video_id', $video->id)
+            ->where('user_id', Auth::user()->id) // Solo el comentario del usuario actual
+            ->first(); // Solo obtenemos un comentario
+
+        // Obtener los comentarios de todos los evaluadores para el video actual
+$comentarios = VideoComment::where('video_id', $video->id)->get()->keyBy('user_id');
+
         // Pasar las evaluaciones y los usuarios a la vista
-        return view('videos.edit', compact('video', 'criterios', 'evaluaciones', 'puntajeUsuarioActual', 'otrasEvaluaciones'));
+        return view('videos.edit', compact('video', 'criterios', 'evaluaciones', 'puntajeUsuarioActual', 'otrasEvaluaciones', 'detalleevaluaciones', 'comentarioEvaluacion', 'comentarios'));
     }
-
-
-
 
     public function update(Request $request, Video $video)
     {
-
         // Validar los datos de la solicitud
         $validated = $request->validate([
             'criterios.*.id' => 'required|exists:criterios,id',
@@ -132,7 +145,17 @@ class VideoController extends Controller
         }
 
         // Actualizar el comentario general
-        $video->comentario_general = $validated['comentario_general'] ?? null;
+
+        // Guardar o actualizar el comentario general en la tabla video_comments
+        VideoComment::updateOrCreate(
+            [
+                'user_id' => Auth::user()->id,
+                'video_id' => $video->id,
+            ],
+            [
+                'comentario' => $validated['comentario_general'] ?? null,
+            ]
+        );
 
         $totalPuntajeActual = EvaluationVideo::where('video_id', $video->id)->sum('puntaje');
 

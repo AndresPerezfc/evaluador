@@ -40,4 +40,9 @@ class Video extends Model
     {
         return $this->hasMany(EvaluationVideo::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(VideoComment::class);
+    }
 }
