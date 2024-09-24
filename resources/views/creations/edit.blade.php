@@ -433,14 +433,14 @@
                             </div>
 
                             <!-- Extra puntos -->
-                            <div class="p-4 rounded-md shadow-sm">
+                            <div class="p-2 rounded-md shadow-sm">
                                 <div class="grid grid-cols-1 gap-4 text-gray-700">
                                     <div>
-                                        <p class="mb-4">
+                                        <p>
                                             @if ($creation->extra_puntos)
-                                            Esta innovación obtuvo los <span class="text-green-600">+10 puntos adicionales</span>
+                                            <span class="text-green-600">Innovación con +10 puntos extra</span> por inscribirse <b>antes</b> del primer cierre.
                                             @else
-                                            Esta innovación <span class="text-red-500"> no obtuvo </span> los +10 puntos adicionales
+                                            <span class="text-red-500">Innovación sin +10 puntos extras</span> por inscribirse <b>despues</b> del primer cierre.
                                             @endif                             
                                         </p>
                                     </div> 
