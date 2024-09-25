@@ -648,12 +648,14 @@
 
                     <a href="{{ $prevUrl }}"
                         class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-2 text-center">
+                        <i class="fa-solid fa-chevron-left"></i>
                         {{ $prevButtonText }}
                     </a>
 
                     <a href="{{ $nextUrl }}"
                         class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-2 text-center">
                         {{ $buttonText }}
+                        <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </div>
 
