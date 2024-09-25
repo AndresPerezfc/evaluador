@@ -449,6 +449,7 @@
                         </div>
                     </div>
 
+                    @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
                     <!-- Formulario de Evaluación -->
                     <div class="container mx-auto my-2 px-6 bg-white rounded-lg">
 
@@ -519,6 +520,7 @@
                             </div>
                         </form>
                     </div>
+                    @endif
                 </div>
                 {{-- Contenido --}}
 

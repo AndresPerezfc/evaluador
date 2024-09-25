@@ -207,7 +207,8 @@
             </ul>
 
             <ul class="pt-4 mt-4 px-2 space-y-2 font-medium border-t border-gray-200">
-
+                
+                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
                 <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 10px"><span
                         class="inline-flex w-6 h-6 justify-center items-center">
 
@@ -221,6 +222,7 @@
                     <p>Puntaje: {{ $puntajeUsuarioActual }} puntos</p>
                 @else
                     <p>Aún no has evaluado esta innovación.</p>
+                @endif
                 @endif
 
                 <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
@@ -527,6 +529,7 @@
                         </div>
                     </div>
 
+                    @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
                     <!-- Formulario de Evaluación -->
                     <div class="container mx-auto my-4 py-6 px-6 bg-white rounded-lg">
 
@@ -597,6 +600,7 @@
                             </div>
                         </form>
                     </div>
+                    @endif
                 </div>
                 {{-- Contenido --}}
 
