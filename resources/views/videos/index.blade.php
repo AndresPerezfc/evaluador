@@ -31,7 +31,7 @@
 
 
 
-    <nav style="background: linear-gradient(90deg, #39B5E7 10%, #13B5C9 100%);"  class="fixed top-0 z-50 w-full border-b border-gray-200">
+    <nav style="background: linear-gradient(90deg, #39B5E7 10%, #13B5C9 100%);" class="fixed top-0 z-50 w-full border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">

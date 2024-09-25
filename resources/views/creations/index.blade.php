@@ -47,12 +47,12 @@
                         </svg>
                     </button>
                     <a href="/" class="flex ms-2 md:me-24 bg-white rounded-md">
-                        <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
+                        <img src="{{ asset('images/logo.png') }}" class="h-12 me-3" alt="Logo innovafest" />
                     </a>
                 </div>
                 <!-- Título centrado -->
                 <div class="flex-grow">
-                    <h1 class="text-3xl ml-7 text-white font-semibold">
+                    <h1 class="text-xl ml-7 text-white font-semibold">
                         Co-creemos
                     </h1>
                 </div>

@@ -31,7 +31,7 @@
 
 
 
-    <nav style="background: linear-gradient(90deg, #40DEA9 10%, #B6E982 100%);"  class="fixed top-0 z-50 w-full border-b border-gray-200">
+    <nav style="background: linear-gradient(90deg, #40DEA9 10%, #B6E982 100%);" class="fixed top-0 z-50 w-full border-b border-gray-200">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -47,12 +47,12 @@
                         </svg>
                     </button>
                     <a href="/" class="flex ms-2 md:me-24 bg-white rounded-md">
-                        <img src="{{ asset('images/logo.png') }}" class="h-14 me-3" alt="Logo innovafest" />
+                        <img src="{{ asset('images/logo.png') }}" class="h-12 me-3" alt="Logo innovafest" />
                     </a>
                 </div>
                 <!-- Título centrado -->
                 <div class="flex-grow">
-                    <h1 class="text-3xl ml-7 text-white font-semibold">
+                    <h1 class="text-xl ml-7 text-white font-semibold">
                         Tus Innovaciones
                     </h1>
                 </div>

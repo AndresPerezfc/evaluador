@@ -102,7 +102,7 @@ class VideoController extends Controller
             ->first(); // Solo obtenemos un comentario
 
         // Obtener los comentarios de todos los evaluadores para el video actual
-$comentarios = VideoComment::where('video_id', $video->id)->get()->keyBy('user_id');
+        $comentarios = VideoComment::where('video_id', $video->id)->get()->keyBy('user_id');
 
         // Pasar las evaluaciones y los usuarios a la vista
         return view('videos.edit', compact('video', 'criterios', 'evaluaciones', 'puntajeUsuarioActual', 'otrasEvaluaciones', 'detalleevaluaciones', 'comentarioEvaluacion', 'comentarios'));

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Innovation;
 use App\Models\Evaluation;
 use App\Models\Criterio;
+use App\Models\InnovationComment;
 use Illuminate\Support\Facades\Auth;
 
 class InnovationController extends Controller
@@ -88,7 +89,42 @@ class InnovationController extends Controller
             ->get()
             ->keyBy('criterio_id'); // Organiza las evaluaciones por criterio
 
-        return view('innovations.edit', compact('innovation', 'criterios', 'evaluaciones'));
+        // Obtener la suma total del puntaje del usuario actual
+        $evaluacionesUsuarioActual = Evaluation::where('innovation_id', $innovation->id)
+            ->where('user_id', Auth::user()->id);
+
+        // Verificar si el usuario ha hecho alguna evaluación
+        if ($evaluacionesUsuarioActual->exists()) {
+            $puntajeUsuarioActual = $evaluacionesUsuarioActual->sum('puntaje');
+        } else {
+            $puntajeUsuarioActual = null; // Usuario no ha evaluado
+        }
+
+        // Obtener evaluaciones de otros usuarios para esta innovación, excluyendo al usuario actual
+        $otrasEvaluaciones = Evaluation::where('innovation_id', $innovation->id)
+            ->where('user_id', '!=', Auth::user()->id) // Excluir al usuario autenticado
+            ->selectRaw('user_id, SUM(puntaje) as total_puntaje') // Sumar los puntajes por usuario
+            ->groupBy('user_id') // Agrupar por usuario
+            ->with('user') // Cargar la información del usuario que hizo la evaluación
+            ->get(); // Obtenemos las evaluaciones agrupadas y con la suma de puntajes
+
+        $detalleevaluaciones = Evaluation::with('criterio', 'user')
+            ->where('innovation_id', $innovation->id)
+            ->where('user_id', '!=', Auth::user()->id)
+            ->get()
+            ->groupBy('user_id');  // Agrupar por user_id
+
+
+        // Obtener comentarios del video de la tabla video_comments
+        $comentarioEvaluacion = InnovationComment::where('innovation_id', $innovation->id)
+            ->where('user_id', Auth::user()->id) // Solo el comentario del usuario actual
+            ->first(); // Solo obtenemos un comentario
+
+        // Obtener los comentarios de todos los evaluadores para el video actual
+        $comentarios = InnovationComment::where('innovation_id', $innovation->id)->get()->keyBy('user_id');
+
+
+        return view('innovations.edit', compact('innovation', 'criterios', 'evaluaciones', 'puntajeUsuarioActual', 'otrasEvaluaciones', 'detalleevaluaciones', 'comentarioEvaluacion', 'comentarios'));
     }
 
     /**
@@ -131,7 +167,17 @@ class InnovationController extends Controller
         }
 
         // Actualizar el comentario general
-        $innovation->comentario_general = $validated['comentario_general'] ?? null;
+
+        // Guardar o actualizar el comentario general en la tabla video_comments
+        InnovationComment::updateOrCreate(
+            [
+                'user_id' => Auth::user()->id,
+                'innovation_id' => $innovation->id,
+            ],
+            [
+                'comentario' => $validated['comentario_general'] ?? null,
+            ]
+        );
 
         $totalPuntajeActual = Evaluation::where('innovation_id', $innovation->id)->sum('puntaje');
 
