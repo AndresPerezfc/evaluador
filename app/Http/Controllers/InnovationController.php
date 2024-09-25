@@ -199,8 +199,7 @@ class InnovationController extends Controller
 
         $innovation->save();
 
-        // Agregar un mensaje de éxito a la sesión
-        return redirect()->route('innovations.index')->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
+        return back()->with('success', 'Innovación evaluada con exito');
     }
 
     /**

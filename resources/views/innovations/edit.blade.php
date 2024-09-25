@@ -21,6 +21,17 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Styles -->
+    <style>
+        .fl-container {
+            top: 70px !important;
+        }
+        .fl-flasher .fl-message{
+            font-size: 16px !important;
+        }
+        .fl-flasher.fl-success:not(.fl-rtl){
+            box-shadow: 0 -2px 6px -1px rgba(0, 0, 0, 0.05), 0 -2px 4px -1px rgba(0, 0, 0, 0.04);
+        }
+    </style>
     @livewireStyles
 </head>
 
@@ -301,6 +312,12 @@
     <div class="p-4 sm:ml-64">
         <div class="mt-14">
             <div class="p-4 rounded-lg">
+
+                @if (session('success'))
+                    <div class="mt-14 p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
+                        <span class="font-medium">{{ session('success') }}</span>
+                    </div>
+                @endif
 
                 {{-- Contenido --}}
                 <div class="container mx-auto my-8 p-6 bg-white shadow rounded-lg">

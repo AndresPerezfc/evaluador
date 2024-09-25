@@ -9,6 +9,8 @@ use App\Models\Criterio;
 use App\Models\VideoComment;
 use Illuminate\Support\Facades\Auth;
 
+
+
 class VideoController extends Controller
 {
 
@@ -177,8 +179,10 @@ class VideoController extends Controller
 
         $video->save();
 
+        return back()->with('success', 'Innovación evaluada con exito');;
+
         // Agregar un mensaje de éxito a la sesión
-        return redirect()->route('videos.index')->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
+       // return redirect()->route('videos.index')->with('success', 'La evaluación de la innovación se ha guardado correctamente.');
     }
 
 
