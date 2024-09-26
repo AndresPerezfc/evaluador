@@ -25,10 +25,12 @@
         .fl-container {
             top: 70px !important;
         }
-        .fl-flasher .fl-message{
+
+        .fl-flasher .fl-message {
             font-size: 16px !important;
         }
-        .fl-flasher.fl-success:not(.fl-rtl){
+
+        .fl-flasher.fl-success:not(.fl-rtl) {
             box-shadow: 0 -2px 6px -1px rgba(0, 0, 0, 0.05), 0 -2px 4px -1px rgba(0, 0, 0, 0.04);
         }
     </style>
@@ -219,22 +221,22 @@
             </ul>
 
             <ul class="pt-4 mt-4 px-2 space-y-2 font-medium border-t border-gray-200">
-                
-                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
-                <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 10px"><span
-                        class="inline-flex w-6 h-6 justify-center items-center">
 
-                        @if (isset($puntajeUsuarioActual))
-                            <i class="fa-solid fa-circle-check text-green-500"></i>
-                        @else
-                            <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
-                        @endif
-                    </span> Tu evaluación</h2>
-                @if (isset($puntajeUsuarioActual))
-                    <p>Puntaje: {{ $puntajeUsuarioActual }} puntos</p>
-                @else
-                    <p>Aún no has evaluado esta innovación.</p>
-                @endif
+                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
+                    <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 10px"><span
+                            class="inline-flex w-6 h-6 justify-center items-center">
+
+                            @if (isset($puntajeUsuarioActual))
+                                <i class="fa-solid fa-circle-check text-green-500"></i>
+                            @else
+                                <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
+                            @endif
+                        </span> Tu evaluación</h2>
+                    @if (isset($puntajeUsuarioActual))
+                        <p>Puntaje: {{ $puntajeUsuarioActual }} puntos</p>
+                    @else
+                        <p>Aún no has evaluado esta innovación.</p>
+                    @endif
                 @endif
 
                 <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
@@ -356,7 +358,7 @@
                                     <div class="text-2xl font-bold {{ $textColorClass }}">
                                         {{ number_format($puntaje, 0) }} / 100
                                     </div>
-                                    
+
                                 </div>
 
                                 <div class="p-4 rounded-md shadow-sm">
@@ -368,7 +370,7 @@
                             </div>
 
                             <!-- Datos de la Innovación -->
-                            <div class="p-4 rounded-md shadow-sm"> 
+                            <div class="p-4 rounded-md shadow-sm">
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
 
                                 @if (!empty($video->proposito))
@@ -530,94 +532,94 @@
                                 </div>
                             </div>
 
-                            <!-- Extra puntos -->
-                            <div class="p-2 rounded-md shadow-sm">
-                                <div class="grid grid-cols-1 gap-4 text-gray-700">
-                                    <div>
-                                        <p>
-                                            @if ($video->extra_puntos)
-                                            <span class="text-green-600">Innovación con +10 puntos extra</span> por inscribirse <b>antes</b> del primer cierre.
-                                            @else
-                                            <span class="text-red-500">Innovación sin +10 puntos extras</span> por inscribirse <b>despues</b> del primer cierre.
-                                            @endif                             
-                                        </p>
-                                    </div> 
+                            @if ($video->extra_puntos)
+                                <!-- Extra puntos -->
+                                <div class="p-2 rounded-md shadow-sm">
+                                    <div class="grid grid-cols-1 gap-4 text-gray-700">
+                                        <div>
+                                            <p>
+                                                <span class="text-green-600">Innovación con +10 puntos extra</span> por
+                                                inscribirse <b>antes</b> del primer cierre.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
 
                     @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
-                    <!-- Formulario de Evaluación -->
-                    <div class="container mx-auto my-4 py-6 px-6 bg-white rounded-lg">
-
                         <!-- Formulario de Evaluación -->
-                        <form action="{{ route('videos.update', $video->id) }}" method="POST" class="space-y-6">
-                            @csrf
-                            @method('PUT')
+                        <div class="container mx-auto my-4 py-6 px-6 bg-white rounded-lg">
 
-                            <!-- Criterios de Evaluación -->
-                            <h3 class="text-2xl font-medium mb-4">Criterios de Evaluación</h3>
+                            <!-- Formulario de Evaluación -->
+                            <form action="{{ route('videos.update', $video->id) }}" method="POST"
+                                class="space-y-6">
+                                @csrf
+                                @method('PUT')
 
-                            <!-- Contenedor con bordes y separaciones -->
-                            <div
-                                class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 divide-y divide-gray-300 border border-gray-300 rounded-md">
+                                <!-- Criterios de Evaluación -->
+                                <h3 class="text-2xl font-medium mb-4">Criterios de Evaluación</h3>
 
-                                @foreach ($criterios as $criterio)
-                                    @php
-                                        $evaluacion = $evaluaciones->get($criterio->id);
-                                    @endphp
+                                <!-- Contenedor con bordes y separaciones -->
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 divide-y divide-gray-300 border border-gray-300 rounded-md">
 
-                                    <!-- Fila del criterio con bordes -->
-                                    <div class="flex items-center p-4">
-                                        <label for="criterio-{{ $criterio->id }}" class="text-lg font-semibold">
-                                            {{ $criterio->name }} <span class="text-sm font-extralight">(Peso:
-                                                {{ $criterio->score }})</span>
-                                        </label>
-                                    </div>
+                                    @foreach ($criterios as $criterio)
+                                        @php
+                                            $evaluacion = $evaluaciones->get($criterio->id);
+                                        @endphp
 
-                                    <!-- Descripción del criterio -->
-                                    <div class="flex items-center border-b border-gray-300 p-4">
-                                        <p class=" text-gray-600">{{ $criterio->description }}</p>
-                                    </div>
+                                        <!-- Fila del criterio con bordes -->
+                                        <div class="flex items-center p-4">
+                                            <label for="criterio-{{ $criterio->id }}" class="text-lg font-semibold">
+                                                {{ $criterio->name }} <span class="text-sm font-extralight">(Peso:
+                                                    {{ $criterio->score }})</span>
+                                            </label>
+                                        </div>
 
-                                    <!-- Input para puntaje -->
-                                    <div class="flex items-center border-b border-gray-300 p-4">
-                                        <input type="hidden" name="criterios[{{ $loop->index }}][id]"
-                                            value="{{ $criterio->id }}">
-                                        <input type="number" name="criterios[{{ $loop->index }}][puntaje]"
-                                            min="0" max="{{ $criterio->score }}"
-                                            value="{{ $evaluacion->puntaje ?? '' }}" required
-                                            class="border border-gray-300 p-2 w-full">
-                                    </div>
+                                        <!-- Descripción del criterio -->
+                                        <div class="flex items-center border-b border-gray-300 p-4">
+                                            <p class=" text-gray-600">{{ $criterio->description }}</p>
+                                        </div>
 
-                                    <!-- Input para comentario -->
-                                    <div class="flex items-center border-b border-gray-300 p-4">
-                                        <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario"
-                                            class="border border-gray-300 p-2 w-full">{{ $evaluacion->comentario ?? '' }}</textarea>
-                                    </div>
-                                @endforeach
-                            </div>
+                                        <!-- Input para puntaje -->
+                                        <div class="flex items-center border-b border-gray-300 p-4">
+                                            <input type="hidden" name="criterios[{{ $loop->index }}][id]"
+                                                value="{{ $criterio->id }}">
+                                            <input type="number" name="criterios[{{ $loop->index }}][puntaje]"
+                                                min="0" max="{{ $criterio->score }}"
+                                                value="{{ $evaluacion->puntaje ?? '' }}" required
+                                                class="border border-gray-300 p-2 w-full">
+                                        </div>
 
-                            <!-- Caja de texto para comentario general -->
-                            <h3 class="text-2xl font-medium">Comentario general</h3>
-                            <div class="flex items-center">
-                                <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
-                                    class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario', $comentarioEvaluacion->comentario ?? '') }}</textarea>
-                            </div>
+                                        <!-- Input para comentario -->
+                                        <div class="flex items-center border-b border-gray-300 p-4">
+                                            <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario"
+                                                class="border border-gray-300 p-2 w-full">{{ $evaluacion->comentario ?? '' }}</textarea>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Caja de texto para comentario general -->
+                                <h3 class="text-2xl font-medium">Comentario general</h3>
+                                <div class="flex items-center">
+                                    <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
+                                        class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario', $comentarioEvaluacion->comentario ?? '') }}</textarea>
+                                </div>
 
 
-                            <!-- Botón Guardar -->
-                            <div class="text-center mb-6">
-                                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
-                                    <button type="submit"
-                                        class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center">
-                                        Guardar Evaluación
-                                    </button>
-                                @endif
-                            </div>
-                        </form>
-                    </div>
+                                <!-- Botón Guardar -->
+                                <div class="text-center mb-6">
+                                    @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
+                                        <button type="submit"
+                                            class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center">
+                                            Guardar Evaluación
+                                        </button>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
                     @endif
                 </div>
                 {{-- Contenido --}}

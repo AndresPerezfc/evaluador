@@ -238,7 +238,7 @@
                                     @php
                                         $puntaje = $creation->puntaje;
                                         $textColorClass = 'text-red-500'; // Valor por defecto
-                                
+
                                         if ($puntaje >= 80) {
                                             $textColorClass = 'text-green-600';
                                         } elseif ($puntaje > 49) {
@@ -263,7 +263,7 @@
                                         {{ $creation->categoria_autor }}
                                     </div>
                                 </div>
-                                
+
                             </div>
 
 
@@ -272,18 +272,18 @@
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
 
                                 @if (!empty($creation->tematica))
-                                <p class="mb-2">
-                                    <strong>Temática:</strong>
-                                    {{ Str::limit($creation->tematica, 300) }}
+                                    <p class="mb-2">
+                                        <strong>Temática:</strong>
+                                        {{ Str::limit($creation->tematica, 300) }}
 
-                                    @if (strlen($creation->tematica) > 300)
-                                        <a href="#" class="text-blue-600 hover:underline"
-                                            data-modal-target="#descriptionModal-{{ $creation->id }}"
-                                            data-modal-toggle="descriptionModal-{{ $creation->id }}">
-                                            Ver más
-                                        </a>
-                                    @endif
-                                </p>
+                                        @if (strlen($creation->tematica) > 300)
+                                            <a href="#" class="text-blue-600 hover:underline"
+                                                data-modal-target="#descriptionModal-{{ $creation->id }}"
+                                                data-modal-toggle="descriptionModal-{{ $creation->id }}">
+                                                Ver más
+                                            </a>
+                                        @endif
+                                    </p>
                                 @endif
 
 
@@ -335,20 +335,20 @@
                                     </div>
                                 </div>
 
-                                
-                                @if (!empty($creation->problematica))
-                                <p>
-                                    <strong>Problemática:</strong>
-                                    {{ Str::limit($creation->problematica, 300) }}
 
-                                    @if (strlen($creation->problematica) > 300)
-                                        <a href="#" class="text-blue-600 hover:underline"
-                                            data-modal-target="#procesoModal-{{ $creation->id }}"
-                                            data-modal-toggle="procesoModal-{{ $creation->id }}">
-                                            Ver más
-                                        </a>
-                                    @endif
-                                </p>
+                                @if (!empty($creation->problematica))
+                                    <p>
+                                        <strong>Problemática:</strong>
+                                        {{ Str::limit($creation->problematica, 300) }}
+
+                                        @if (strlen($creation->problematica) > 300)
+                                            <a href="#" class="text-blue-600 hover:underline"
+                                                data-modal-target="#procesoModal-{{ $creation->id }}"
+                                                data-modal-toggle="procesoModal-{{ $creation->id }}">
+                                                Ver más
+                                            </a>
+                                        @endif
+                                    </p>
                                 @endif
 
                                 <!-- Modal -->
@@ -427,99 +427,98 @@
                                         @if (!empty($creation->programa))
                                             <p><strong>Programa Académico:</strong> {{ $creation->programa }}</p>
                                         @endif
-                                        
+
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Extra puntos -->
-                            <div class="p-2 rounded-md shadow-sm">
-                                <div class="grid grid-cols-1 gap-4 text-gray-700">
-                                    <div>
-                                        <p>
-                                            @if ($creation->extra_puntos)
-                                            <span class="text-green-600">Innovación con +10 puntos extra</span> por inscribirse <b>antes</b> del primer cierre.
-                                            @else
-                                            <span class="text-red-500">Innovación sin +10 puntos extras</span> por inscribirse <b>despues</b> del primer cierre.
-                                            @endif                             
-                                        </p>
-                                    </div> 
+                            @if ($creation->extra_puntos)
+                                <!-- Extra puntos -->
+                                <div class="p-2 rounded-md shadow-sm">
+                                    <div class="grid grid-cols-1 gap-4 text-gray-700">
+                                        <div>
+                                            <p>
+                                                <span class="text-green-600">Innovación con +10 puntos extra</span> por
+                                                inscribirse <b>antes</b> del primer cierre.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
 
                     @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
-                    <!-- Formulario de Evaluación -->
-                    <div class="container mx-auto my-2 px-6 bg-white rounded-lg">
-
                         <!-- Formulario de Evaluación -->
-                        <form action="{{ route('creations.update', $creation->id) }}" method="POST"
-                            class="space-y-6">
-                            @csrf
-                            @method('PUT')
+                        <div class="container mx-auto my-2 px-6 bg-white rounded-lg">
 
-                            <!-- Criterios de Evaluación -->
-                            <h3 class="text-2xl font-medium mb-4">Criterios de Evaluación</h3>
+                            <!-- Formulario de Evaluación -->
+                            <form action="{{ route('creations.update', $creation->id) }}" method="POST"
+                                class="space-y-6">
+                                @csrf
+                                @method('PUT')
 
-                            <!-- Contenedor con bordes y separaciones -->
-                            <div
-                                class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 divide-y divide-gray-300 border border-gray-300 rounded-md">
+                                <!-- Criterios de Evaluación -->
+                                <h3 class="text-2xl font-medium mb-4">Criterios de Evaluación</h3>
 
-                                @foreach ($criterios as $criterio)
-                                    @php
-                                        $evaluacion = $evaluaciones->get($criterio->id);
-                                    @endphp
+                                <!-- Contenedor con bordes y separaciones -->
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 divide-y divide-gray-300 border border-gray-300 rounded-md">
 
-                                    <!-- Fila del criterio con bordes -->
-                                    <div class="flex items-center p-4">
-                                        <label for="criterio-{{ $criterio->id }}" class="text-lg font-semibold">
-                                            {{ $criterio->name }} <span class="text-sm font-extralight">(Peso:
-                                                {{ $criterio->score }})</span>
-                                        </label>
-                                    </div>
+                                    @foreach ($criterios as $criterio)
+                                        @php
+                                            $evaluacion = $evaluaciones->get($criterio->id);
+                                        @endphp
 
-                                    <!-- Descripción del criterio -->
-                                    <div class="flex items-center border-b border-gray-300 p-4">
-                                        <p class=" text-gray-600">{{ $criterio->description }}</p>
-                                    </div>
+                                        <!-- Fila del criterio con bordes -->
+                                        <div class="flex items-center p-4">
+                                            <label for="criterio-{{ $criterio->id }}" class="text-lg font-semibold">
+                                                {{ $criterio->name }} <span class="text-sm font-extralight">(Peso:
+                                                    {{ $criterio->score }})</span>
+                                            </label>
+                                        </div>
 
-                                    <!-- Input para puntaje -->
-                                    <div class="flex items-center border-b border-gray-300 p-4">
-                                        <input type="hidden" name="criterios[{{ $loop->index }}][id]"
-                                            value="{{ $criterio->id }}">
-                                        <input type="number" name="criterios[{{ $loop->index }}][puntaje]"
-                                            min="0" max="{{ $criterio->score }}"
-                                            value="{{ $evaluacion->puntaje ?? '' }}" required
-                                            class="border border-gray-300 p-2 w-full">
-                                    </div>
+                                        <!-- Descripción del criterio -->
+                                        <div class="flex items-center border-b border-gray-300 p-4">
+                                            <p class=" text-gray-600">{{ $criterio->description }}</p>
+                                        </div>
 
-                                    <!-- Input para comentario -->
-                                    <div class="flex items-center border-b border-gray-300 p-4">
-                                        <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario"
-                                            class="border border-gray-300 p-2 w-full">{{ $evaluacion->comentario ?? '' }}</textarea>
-                                    </div>
-                                @endforeach
-                            </div>
+                                        <!-- Input para puntaje -->
+                                        <div class="flex items-center border-b border-gray-300 p-4">
+                                            <input type="hidden" name="criterios[{{ $loop->index }}][id]"
+                                                value="{{ $criterio->id }}">
+                                            <input type="number" name="criterios[{{ $loop->index }}][puntaje]"
+                                                min="0" max="{{ $criterio->score }}"
+                                                value="{{ $evaluacion->puntaje ?? '' }}" required
+                                                class="border border-gray-300 p-2 w-full">
+                                        </div>
 
-                            <!-- Caja de texto para comentario general -->
-                            <h3 class="text-2xl font-medium">Comentario general</h3>
-                            <div class="flex items-center">
-                                <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
-                                    class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario_general', $creation->comentario_general ?? '') }}</textarea>
-                            </div>
+                                        <!-- Input para comentario -->
+                                        <div class="flex items-center border-b border-gray-300 p-4">
+                                            <textarea name="criterios[{{ $loop->index }}][comentario]" placeholder="Comentario"
+                                                class="border border-gray-300 p-2 w-full">{{ $evaluacion->comentario ?? '' }}</textarea>
+                                        </div>
+                                    @endforeach
+                                </div>
 
-                            <!-- Botón Guardar -->
-                            <div class="text-center mb-6">
-                                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
-                                <button type="submit"
-                                    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                    Guardar Evaluación
-                                </button>
-                                @endif
-                            </div>
-                        </form>
-                    </div>
+                                <!-- Caja de texto para comentario general -->
+                                <h3 class="text-2xl font-medium">Comentario general</h3>
+                                <div class="flex items-center">
+                                    <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
+                                        class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario_general', $creation->comentario_general ?? '') }}</textarea>
+                                </div>
+
+                                <!-- Botón Guardar -->
+                                <div class="text-center mb-6">
+                                    @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
+                                        <button type="submit"
+                                            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            Guardar Evaluación
+                                        </button>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
                     @endif
                 </div>
                 {{-- Contenido --}}

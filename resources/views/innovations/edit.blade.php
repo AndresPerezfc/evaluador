@@ -25,10 +25,12 @@
         .fl-container {
             top: 70px !important;
         }
-        .fl-flasher .fl-message{
+
+        .fl-flasher .fl-message {
             font-size: 16px !important;
         }
-        .fl-flasher.fl-success:not(.fl-rtl){
+
+        .fl-flasher.fl-success:not(.fl-rtl) {
             box-shadow: 0 -2px 6px -1px rgba(0, 0, 0, 0.05), 0 -2px 4px -1px rgba(0, 0, 0, 0.04);
         }
     </style>
@@ -217,22 +219,22 @@
             </ul>
 
             <ul class="pt-4 mt-4 px-2 space-y-2 font-medium border-t border-gray-200">
-                
-                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
-                <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 10px"><span
-                        class="inline-flex w-6 h-6 justify-center items-center">
 
-                        @if (isset($puntajeUsuarioActual))
-                            <i class="fa-solid fa-circle-check text-green-500"></i>
-                        @else
-                            <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
-                        @endif
-                    </span> Tu evaluación</h2>
-                @if (isset($puntajeUsuarioActual))
-                    <p>Puntaje: {{ $puntajeUsuarioActual }} puntos</p>
-                @else
-                    <p>Aún no has evaluado esta innovación.</p>
-                @endif
+                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
+                    <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 10px"><span
+                            class="inline-flex w-6 h-6 justify-center items-center">
+
+                            @if (isset($puntajeUsuarioActual))
+                                <i class="fa-solid fa-circle-check text-green-500"></i>
+                            @else
+                                <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
+                            @endif
+                        </span> Tu evaluación</h2>
+                    @if (isset($puntajeUsuarioActual))
+                        <p>Puntaje: {{ $puntajeUsuarioActual }} puntos</p>
+                    @else
+                        <p>Aún no has evaluado esta innovación.</p>
+                    @endif
                 @endif
 
                 <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
@@ -531,20 +533,19 @@
                                 </div>
                             </div>
 
-                            <!-- Extra puntos -->
-                            <div class="p-2 rounded-md shadow-sm">
-                                <div class="grid grid-cols-1 gap-4 text-gray-700">
-                                    <div>
-                                        <p>
-                                            @if ($innovation->extra_puntos)
-                                            <span class="text-green-600">Innovación con +10 puntos extra</span> por inscribirse <b>antes</b> del primer cierre.
-                                            @else
-                                            <span class="text-red-500">Innovación sin +10 puntos extras</span> por inscribirse <b>despues</b> del primer cierre.
-                                            @endif                             
-                                        </p>
-                                    </div> 
+                            @if ($innovation->extra_puntos)
+                                <!-- Extra puntos -->
+                                <div class="p-2 rounded-md shadow-sm">
+                                    <div class="grid grid-cols-1 gap-4 text-gray-700">
+                                        <div>
+                                            <p>
+                                                <span class="text-green-600">Innovación con +10 puntos extra</span> por
+                                                inscribirse <b>antes</b> del primer cierre.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
 
@@ -602,11 +603,11 @@
                                 </div>
 
                                 <!-- Caja de texto para comentario general -->
-                            <h3 class="text-2xl font-medium">Comentario general</h3>
-                            <div class="flex items-center">
-                                <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
-                                    class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario', $comentarioEvaluacion->comentario ?? '') }}</textarea>
-                            </div>
+                                <h3 class="text-2xl font-medium">Comentario general</h3>
+                                <div class="flex items-center">
+                                    <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
+                                        class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario', $comentarioEvaluacion->comentario ?? '') }}</textarea>
+                                </div>
 
                                 <!-- Botón Guardar -->
                                 <div class="text-center mb-6">
@@ -632,10 +633,14 @@
                     $currentId = $innovation->id;
 
                     // Buscar el siguiente ID mayor que el actual (para el botón de "Siguiente")
-                    $nextInnovation = \App\Models\Innovation::where('id', '>', $currentId)->orderBy('id', 'asc')->first();
+                    $nextInnovation = \App\Models\Innovation::where('id', '>', $currentId)
+                        ->orderBy('id', 'asc')
+                        ->first();
 
                     // Buscar el anterior ID menor que el actual (para el botón de "Anterior")
-                    $prevInnovation = \App\Models\Innovation::where('id', '<', $currentId)->orderBy('id', 'desc')->first();
+                    $prevInnovation = \App\Models\Innovation::where('id', '<', $currentId)
+                        ->orderBy('id', 'desc')
+                        ->first();
 
                     // Buscar el primer y último ID existente
                     $firstInnovation = \App\Models\Innovation::orderBy('id', 'asc')->first();
