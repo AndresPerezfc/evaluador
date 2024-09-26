@@ -120,13 +120,13 @@
                 'name' => 'Co-creemos',
                 'icon' => 'fa-solid fa-people-group',
                 'active' => false,
-                'route' => '#'
+                'route' => '/creations'
             ],
 
             [
                 'name' => 'Tus Innovaciones',
                 'icon' => 'fa-solid fa-lightbulb',
-                'route' => '#',
+                'route' => '/innovations',
                 'active' => false,
             ],
 
