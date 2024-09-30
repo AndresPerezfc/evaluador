@@ -355,7 +355,7 @@
                                             {{ number_format($puntaje, 0) }} / 100
                                         </div>
                                     @else
-                                        <p>Debes evaluar la innovación antes para ver su puntaje actual</p>
+                                        <p>Debes evaluar la innovación antes, para ver su puntaje actual</p>
                                     @endif
                                 </div>
 
