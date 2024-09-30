@@ -161,11 +161,8 @@
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
             <ul class="space-y-2 font-medium">
-
                 @foreach ($links as $link)
-
                     <li>
-
                         @isset($link['header'])
                             <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">
                                 {{ $link['header'] }}
@@ -266,7 +263,6 @@
                         @endif
                     </ul>
                 @endif
-
             </ul>
         </div>
     </aside>
@@ -364,7 +360,6 @@
                                     @else
                                         <p>Debes evaluar la innovación antes para ver su puntaje actual</p>
                                     @endif
-
                                 </div>
 
                                 <div class="p-4 rounded-md shadow-sm">
@@ -789,8 +784,13 @@
             detalleEvaluacionDiv.appendChild(table);
 
             // Mostrar el comentario general del evaluador
-            let comentarioGeneral = comentariosPorUsuario[userId] ? comentariosPorUsuario[userId].comentario :
+            let comentarioGeneral = (comentariosPorUsuario[userId] && comentariosPorUsuario[userId].comentario !==
+                    null && comentariosPorUsuario[userId].comentario !== undefined) ?
+                comentariosPorUsuario[userId].comentario :
                 'Sin comentario';
+
+            console.log(comentarioGeneral);
+
             let comentarioDiv = document.createElement('div');
             comentarioDiv.classList.add('mt-4', 'p-4', 'bg-gray-100', 'border', 'border-gray-300', 'rounded');
             comentarioDiv.innerHTML = `<strong>Comentario general:</strong> ${comentarioGeneral}`;

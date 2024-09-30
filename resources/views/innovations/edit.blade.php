@@ -797,8 +797,13 @@
             detalleEvaluacionDiv.appendChild(table);
 
             // Mostrar el comentario general del evaluador
-            let comentarioGeneral = comentariosPorUsuario[userId] ? comentariosPorUsuario[userId].comentario :
+            let comentarioGeneral = (comentariosPorUsuario[userId] && comentariosPorUsuario[userId].comentario !==
+                    null && comentariosPorUsuario[userId].comentario !== undefined) ?
+                comentariosPorUsuario[userId].comentario :
                 'Sin comentario';
+
+            console.log(comentarioGeneral);
+
             let comentarioDiv = document.createElement('div');
             comentarioDiv.classList.add('mt-4', 'p-4', 'bg-gray-100', 'border', 'border-gray-300', 'rounded');
             comentarioDiv.innerHTML = `<strong>Comentario general:</strong> ${comentarioGeneral}`;

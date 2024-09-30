@@ -21,6 +21,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Styles -->
+    <style>
+        .fl-container {
+            top: 70px !important;
+        }
+
+        .fl-flasher .fl-message {
+            font-size: 16px !important;
+        }
+
+        .fl-flasher.fl-success:not(.fl-rtl) {
+            box-shadow: 0 -2px 6px -1px rgba(0, 0, 0, 0.05), 0 -2px 4px -1px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+
     @livewireStyles
 </head>
 
@@ -204,8 +218,99 @@
                     </li>
                 @endforeach
             </ul>
+
+            <ul class="pt-4 mt-4 px-2 space-y-2 font-medium border-t border-gray-200">
+
+                @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
+                    <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 10px"><span
+                            class="inline-flex w-6 h-6 justify-center items-center">
+
+                            @if (isset($puntajeUsuarioActual))
+                                <i class="fa-solid fa-circle-check text-green-500"></i>
+                            @else
+                                <i class="fa-solid fa-circle-exclamation text-yellow-300"></i>
+                            @endif
+                        </span> Tu evaluación</h2>
+                    @if (isset($puntajeUsuarioActual))
+                        <p>Puntaje: {{ $puntajeUsuarioActual }} puntos</p>
+                    @else
+                        <p>Aún no has evaluado esta innovación.</p>
+                    @endif
+                @endif
+
+                @if (isset($puntajeUsuarioActual))
+                    <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
+                        <span class="inline-flex w-6 h-6 justify-center items-center">
+                            @if ($otrasEvaluaciones->isEmpty())
+                                <i class="fa-solid fa-clipboard-check text-yellow-300"></i>
+                            @else
+                                <i class="fa-solid fa-clipboard-check text-green-500"></i>
+                            @endif
+                        </span> Evaluaciones
+                    </h2>
+
+                    <ul class="max-w-md space-y-1 text-gray-500">
+                        @if ($otrasEvaluaciones->isEmpty())
+                            <li>
+                                <span class="text-red-500">Esta innovación aún no ha sido evaluada por otros
+                                    evaluadores.</span>
+                            </li>
+                        @else
+                            @foreach ($otrasEvaluaciones as $evaluacion)
+                                <li class="border-t cursor-pointer" onclick="openModal({{ $evaluacion->user_id }})">
+                                    <span class="font-semibold">{{ $evaluacion->user->name }}</span>:
+                                    {{ $evaluacion->total_puntaje }} puntos
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                @endif
+            </ul>
         </div>
     </aside>
+
+
+    <!-- Modal -->
+    <div id="modal-evaluacion"
+        class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+        <div class="relative w-1/2 max-h-[90vh]"> <!-- Ajustar altura máxima -->
+            <!-- Modal content -->
+            <div class="relative bg-white w-full max-h-[100vh] min-h-[400px] overflow-y-auto rounded-lg shadow">
+                <!-- Añadir min-height -->
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                    <h2 class="text-xl font-semibold mb-3" id="evaluador-nombre"></h2>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                        data-modal-hide>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Cerrar</span>
+                    </button>
+                </div>
+
+                <!-- Modal body with scroll -->
+                <div class="p-4 md:p-5 space-y-4 overflow-y-auto max-h-96"> <!-- Cambiar max-h-80 a max-h-96 -->
+                    <p class="text-base leading-relaxed text-gray-500">
+                    <div id="detalle-evaluacion" class="text-gray-700">
+                        <!-- Aquí cargaremos los detalles dinámicamente -->
+                    </div>
+                    </p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+                    <button data-modal-hide type="button"
+                        class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="p-4 sm:ml-64">
@@ -220,7 +325,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
                         <!-- Columna 1: Video de presentación -->
-                        <div class="aspect-w-16 aspect-h-9 p-2 rounded-md shadow-md flex items-center justify-center">
+                        <div class="aspect-w-16 aspect-h-9 p-2 rounded-md flex items-center justify-center">
                             @if (!empty($creation->incrustable))
                                 {!! $creation->incrustable !!}
                             @else
@@ -233,33 +338,37 @@
                         <div class="flex flex-col space-y-6">
                             <!-- Puntaje Actual -->
                             <div class="grid grid-cols-3 gap-4">
-                                <div class="p-4 rounded-md shadow-md">
-                                    <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
-                                    @php
-                                        $puntaje = $creation->puntaje;
-                                        $textColorClass = 'text-red-500'; // Valor por defecto
+                                <div class="p-4 rounded-md shadow-sm">
+                                    <h2 class="text-xl font-medium mb-2">Puntaje Actual</h2>
+                                    @if (isset($puntajeUsuarioActual))
+                                        @php
+                                            $puntaje = $creation->puntaje;
+                                            $textColorClass = 'text-red-500'; // Valor por defecto
 
-                                        if ($puntaje >= 80) {
-                                            $textColorClass = 'text-green-600';
-                                        } elseif ($puntaje > 49) {
-                                            $textColorClass = 'text-yellow-500';
-                                        }
-                                    @endphp
-                                    <div class="text-2xl font-bold {{ $textColorClass }}">
-                                        {{ number_format($puntaje, 0) }} / 100
-                                    </div>
+                                            if ($puntaje >= 80) {
+                                                $textColorClass = 'text-green-600';
+                                            } elseif ($puntaje > 49) {
+                                                $textColorClass = 'text-yellow-500';
+                                            }
+                                        @endphp
+                                        <div class="text-2xl font-bold {{ $textColorClass }}">
+                                            {{ number_format($puntaje, 0) }} / 100
+                                        </div>
+                                    @else
+                                        <p>Debes evaluar la innovación antes para ver su puntaje actual</p>
+                                    @endif
                                 </div>
 
-                                <div class="p-4 rounded-md shadow-md">
-                                    <h2 class="text-2xl font-medium mb-2">Rol</h2>
-                                    <div class="text-2xl font-bold text-green-600">
+                                <div class="p-4 rounded-md shadow-sm">
+                                    <h2 class="text-xl font-medium mb-2">Rol</h2>
+                                    <div class="text-xl font-bold">
                                         {{ $creation->rol_autor }}
                                     </div>
                                 </div>
 
-                                <div class="p-4 rounded-md shadow-md">
-                                    <h2 class="text-2xl font-medium mb-2">Categoría</h2>
-                                    <div class="text-2xl font-bold text-green-600">
+                                <div class="p-4 rounded-md shadow-sm">
+                                    <h2 class="text-xl font-medium mb-2">Categoría</h2>
+                                    <div class="text-2xl font-bold">
                                         {{ $creation->categoria_autor }}
                                     </div>
                                 </div>
@@ -268,7 +377,7 @@
 
 
                             <!-- Datos de la Innovación -->
-                            <div class="p-4 rounded-md shadow-md">
+                            <div class="p-4 rounded-md shadow-sm">
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
 
                                 @if (!empty($creation->tematica))
@@ -290,11 +399,11 @@
 
                                 <!-- Modal -->
                                 <div id="descriptionModal-{{ $creation->id }}" tabindex="-1"
-                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 items-center justify-center">
-                                    <div class="relative max-w-xl max-h-full w-full">
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                    <div class="relative w-1/2 max-h-full">
                                         <!-- Modal content -->
                                         <div
-                                            class="relative bg-white max-w-2xl w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
+                                            class="relative bg-white w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
                                             <!-- Modal header -->
                                             <div
                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
@@ -353,11 +462,11 @@
 
                                 <!-- Modal -->
                                 <div id="procesoModal-{{ $creation->id }}" tabindex="-1"
-                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 items-center justify-center">
-                                    <div class="relative max-w-xl max-h-full w-full">
+                                    class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
+                                    <div class="relative w-1/2 max-h-full">
                                         <!-- Modal content -->
                                         <div
-                                            class="relative bg-white max-w-2xl w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
+                                            class="relative bg-white w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
                                             <!-- Modal header -->
                                             <div
                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
@@ -402,7 +511,7 @@
                             </div>
 
                             <!-- Datos del Innovador -->
-                            <div class="p-4 rounded-md shadow-md">
+                            <div class="p-4 rounded-md shadow-sm">
                                 <h2 class="text-2xl font-medium mb-4">Datos del Innovador</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                                     <div>
@@ -505,14 +614,14 @@
                                 <h3 class="text-2xl font-medium">Comentario general</h3>
                                 <div class="flex items-center">
                                     <textarea name="comentario_general" placeholder="Comentario general sobre la innovación"
-                                        class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario_general', $creation->comentario_general ?? '') }}</textarea>
+                                        class="border border-gray-300 p-2 w-full rounded-md">{{ old('comentario', $comentarioEvaluacion->comentario ?? '') }}</textarea>
                                 </div>
 
                                 <!-- Botón Guardar -->
                                 <div class="text-center mb-6">
                                     @if (auth()->check() && (auth()->user()->rol == 'superadmin' || auth()->user()->rol == 'evaluador'))
                                         <button type="submit"
-                                            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-lg px-5 py-2.5 text-center">
                                             Guardar Evaluación
                                         </button>
                                     @endif
@@ -522,6 +631,60 @@
                     @endif
                 </div>
                 {{-- Contenido --}}
+
+                <div class="h-10">
+                </div>
+
+                @php
+                    // ID actual de la innovación (puede venir del modelo o de la ruta)
+                    $currentId = $creation->id;
+
+                    // Buscar el siguiente ID mayor que el actual (para el botón de "Siguiente")
+                    $nextInnovation = \App\Models\Creation::where('id', '>', $currentId)->orderBy('id', 'asc')->first();
+
+                    // Buscar el anterior ID menor que el actual (para el botón de "Anterior")
+                    $prevInnovation = \App\Models\Creation::where('id', '<', $currentId)
+                        ->orderBy('id', 'desc')
+                        ->first();
+
+                    // Buscar el primer y último ID existente
+                    $firstInnovation = \App\Models\Creation::orderBy('id', 'asc')->first();
+                    $lastInnovation = \App\Models\Creation::orderBy('id', 'desc')->first();
+
+                    // Lógica para el botón "Siguiente"
+                    if ($nextInnovation) {
+                        $nextUrl = '/creations/' . $nextInnovation->id . '/edit';
+                        $buttonText = 'Siguiente';
+                    } else {
+                        $nextUrl = '/creations/' . $firstInnovation->id . '/edit';
+                        $buttonText = 'Volver al inicio';
+                    }
+
+                    // Lógica para el botón "Anterior"
+                    if ($prevInnovation) {
+                        $prevUrl = '/creations/' . $prevInnovation->id . '/edit';
+                        $prevButtonText = 'Anterior';
+                    } else {
+                        $prevUrl = '/creations/' . $lastInnovation->id . '/edit';
+                        $prevButtonText = 'Ir al último';
+                    }
+                @endphp
+
+                <div class=""
+                    style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f8f9fa; padding: 15px; border-top: 2px solid #e0e0e0; z-index: 1000; display: flex; justify-content: space-between; align-items: center;">
+
+                    <a href="{{ $prevUrl }}"
+                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-2 text-center">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        {{ $prevButtonText }}
+                    </a>
+
+                    <a href="{{ $nextUrl }}"
+                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-2 text-center">
+                        {{ $buttonText }}
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                </div>
 
             </div>
         </div>
@@ -554,6 +717,102 @@
             modalId.classList.add('hidden');
         });
     });
+</script>
+
+<script>
+    function openModal(userId) {
+        // Obtener todas las evaluaciones como un array
+        let evaluacionesPorUsuario = @json($detalleevaluaciones);
+        let comentariosPorUsuario = @json($comentarios); // Comentarios generales
+
+        // Obtener las evaluaciones del usuario seleccionado
+        let evaluaciones = evaluacionesPorUsuario[userId] || [];
+
+        // Obtener el modal y elementos donde mostrar la información
+        let modal = document.getElementById('modal-evaluacion');
+        let detalleEvaluacionDiv = document.getElementById('detalle-evaluacion');
+        let evaluadorNombre = document.getElementById('evaluador-nombre');
+
+        // Limpiar cualquier contenido anterior
+        detalleEvaluacionDiv.innerHTML = '';
+
+        if (evaluaciones.length > 0) {
+            // Mostrar el nombre del evaluador
+            evaluadorNombre.textContent = "Evaluador - " + evaluaciones[0].user.name;
+
+            // Crear una tabla
+            let table = document.createElement('table');
+            table.classList.add('w-full', 'table-auto', 'border-collapse', 'border', 'border-gray-300');
+
+            // Crear el encabezado de la tabla
+            let thead = document.createElement('thead');
+            thead.innerHTML = `
+            <tr class="bg-gray-100">
+                <th class="px-4 py-2 border">Criterio</th>
+                <th class="px-4 py-2 border">Puntaje</th>
+                <th class="px-4 py-2 border">Comentario</th>
+            </tr>
+        `;
+            table.appendChild(thead);
+
+            // Crear el cuerpo de la tabla
+            let tbody = document.createElement('tbody');
+
+            // Variable para calcular la suma total de los puntajes
+            let totalPuntaje = 0;
+
+            // Recorrer las evaluaciones para llenar las filas
+            evaluaciones.forEach(evaluacion => {
+                let criterioNombre = evaluacion.criterio.name;
+                let puntaje = evaluacion.puntaje;
+                let comentario = evaluacion.comentario || 'Sin comentario';
+
+                // Sumar el puntaje
+                totalPuntaje += puntaje;
+
+                // Crear una fila por cada evaluación
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                <td class="px-4 py-2 border">${criterioNombre}</td>
+                <td class="px-4 py-2 border text-center">${puntaje}</td>
+                <td class="px-4 py-2 border">${comentario}</td>
+            `;
+                tbody.appendChild(tr);
+            });
+
+            // Agregar una fila final para mostrar el total de puntajes
+            let trTotal = document.createElement('tr');
+            trTotal.innerHTML = `
+            <td class="px-4 py-2 border font-bold text-right" colspan="1">Total Puntaje</td>
+            <td class="px-4 py-2 border text-center font-bold">${totalPuntaje}</td>
+        `;
+            tbody.appendChild(trTotal);
+
+            // Añadir el cuerpo a la tabla
+            table.appendChild(tbody);
+
+            // Agregar la tabla al div `detalle-evaluacion`
+            detalleEvaluacionDiv.appendChild(table);
+
+            // Mostrar el comentario general del evaluador
+            let comentarioGeneral = (comentariosPorUsuario[userId] && comentariosPorUsuario[userId].comentario !==
+                    null && comentariosPorUsuario[userId].comentario !== undefined) ?
+                comentariosPorUsuario[userId].comentario :
+                'Sin comentario';
+
+            console.log(comentarioGeneral);
+
+            let comentarioDiv = document.createElement('div');
+            comentarioDiv.classList.add('mt-4', 'p-4', 'bg-gray-100', 'border', 'border-gray-300', 'rounded');
+            comentarioDiv.innerHTML = `<strong>Comentario general:</strong> ${comentarioGeneral}`;
+            detalleEvaluacionDiv.appendChild(comentarioDiv);
+        } else {
+            detalleEvaluacionDiv.innerHTML = '<p>No hay detalles disponibles para esta evaluación.</p>';
+        }
+
+        // Mostrar el modal
+        modal.classList.remove('hidden');
+    }
 </script>
 
 </html>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('innovation_comments', function (Blueprint $table) {
             $table->id();
-            $table->text('comentario');
+            $table->text('comentario')->nullable();;
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('innovation_id')->constrained('innovations');
             $table->timestamps();
