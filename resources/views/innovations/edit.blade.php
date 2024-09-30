@@ -237,31 +237,33 @@
                     @endif
                 @endif
 
-                <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
-                    <span class="inline-flex w-6 h-6 justify-center items-center">
-                        @if ($otrasEvaluaciones->isEmpty())
-                            <i class="fa-solid fa-clipboard-check text-yellow-300"></i>
-                        @else
-                            <i class="fa-solid fa-clipboard-check text-green-500"></i>
-                        @endif
-                    </span> Evaluaciones
-                </h2>
+                @if (isset($puntajeUsuarioActual))
+                    <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
+                        <span class="inline-flex w-6 h-6 justify-center items-center">
+                            @if ($otrasEvaluaciones->isEmpty())
+                                <i class="fa-solid fa-clipboard-check text-yellow-300"></i>
+                            @else
+                                <i class="fa-solid fa-clipboard-check text-green-500"></i>
+                            @endif
+                        </span> Evaluaciones
+                    </h2>
 
-                <ul class="max-w-md space-y-1 text-gray-500">
-                    @if ($otrasEvaluaciones->isEmpty())
-                        <li>
-                            <span class="text-red-500">Esta innovación aún no ha sido evaluada por otros
-                                evaluadores.</span>
-                        </li>
-                    @else
-                        @foreach ($otrasEvaluaciones as $evaluacion)
-                            <li class="border-t cursor-pointer" onclick="openModal({{ $evaluacion->user_id }})">
-                                <span class="font-semibold">{{ $evaluacion->user->name }}</span>:
-                                {{ $evaluacion->total_puntaje }} puntos
+                    <ul class="max-w-md space-y-1 text-gray-500">
+                        @if ($otrasEvaluaciones->isEmpty())
+                            <li>
+                                <span class="text-red-500">Esta innovación aún no ha sido evaluada por otros
+                                    evaluadores.</span>
                             </li>
-                        @endforeach
-                    @endif
-                </ul>
+                        @else
+                            @foreach ($otrasEvaluaciones as $evaluacion)
+                                <li class="border-t cursor-pointer" onclick="openModal({{ $evaluacion->user_id }})">
+                                    <span class="font-semibold">{{ $evaluacion->user->name }}</span>:
+                                    {{ $evaluacion->total_puntaje }} puntos
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                @endif
 
             </ul>
 
@@ -343,19 +345,23 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="p-4 rounded-md shadow-sm">
                                     <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
-                                    @php
-                                        $puntaje = $innovation->puntaje;
-                                        $textColorClass = 'text-red-500'; // Valor por defecto
+                                    @if (isset($puntajeUsuarioActual))
+                                        @php
+                                            $puntaje = $innovation->puntaje;
+                                            $textColorClass = 'text-red-500'; // Valor por defecto
 
-                                        if ($puntaje >= 80) {
-                                            $textColorClass = 'text-green-600';
-                                        } elseif ($puntaje > 49) {
-                                            $textColorClass = 'text-yellow-500';
-                                        }
-                                    @endphp
-                                    <div class="text-2xl font-bold {{ $textColorClass }}">
-                                        {{ number_format($puntaje, 0) }} / 100
-                                    </div>
+                                            if ($puntaje >= 80) {
+                                                $textColorClass = 'text-green-600';
+                                            } elseif ($puntaje > 49) {
+                                                $textColorClass = 'text-yellow-500';
+                                            }
+                                        @endphp
+                                        <div class="text-2xl font-bold {{ $textColorClass }}">
+                                            {{ number_format($puntaje, 0) }} / 100
+                                        </div>
+                                    @else
+                                        <p>Debes evaluar la innovación antes para ver su puntaje actual</p>
+                                    @endif
                                 </div>
 
                                 <div class="p-4 rounded-md shadow-sm">
@@ -394,10 +400,10 @@
                                 <!-- Modal -->
                                 <div id="descriptionModal-{{ $innovation->id }}" tabindex="-1"
                                     class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
-                                    <div class="relative max-w-xl max-h-full w-full">
+                                    <div class="relative w-1/2 max-h-full">
                                         <!-- Modal content -->
                                         <div
-                                            class="relative bg-white max-w-2xl w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
+                                            class="relative bg-white w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
                                             <!-- Modal header -->
                                             <div
                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
@@ -455,10 +461,11 @@
                                 <!-- Modal -->
                                 <div id="procesoModal-{{ $innovation->id }}" tabindex="-1"
                                     class="fixed inset-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-25 flex items-center justify-center">
-                                    <div class="relative max-w-xl max-h-full w-full">
+                                    <div class="relative w-1/2 max-h-full"> <!-- Cambiado a max-w-4xl -->
                                         <!-- Modal content -->
                                         <div
-                                            class="relative bg-white max-w-2xl w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
+                                            class="relative bg-white w-full max-h-[100vh] overflow-y-auto rounded-lg shadow">
+                                            <!-- Cambiado a max-w-4xl -->
                                             <!-- Modal header -->
                                             <div
                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
