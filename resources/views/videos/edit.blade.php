@@ -342,7 +342,7 @@
                             <!-- Puntaje Actual -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="p-4 rounded-md shadow-sm">
-                                    <h2 class="text-2xl font-medium mb-2">Puntaje Actual</h2>
+                                    <h2 class="text-xl font-medium mb-2">Puntaje Actual</h2>
                                     @if (isset($puntajeUsuarioActual))
                                         @php
                                             $puntaje = $video->puntaje;
@@ -363,7 +363,7 @@
                                 </div>
 
                                 <div class="p-4 rounded-md shadow-sm">
-                                    <h2 class="text-2xl font-medium mb-2">Rol</h2>
+                                    <h2 class="text-xl font-medium mb-2">Rol</h2>
                                     <div class="text-2xl font-bold">
                                         {{ $video->rol_autor }}
                                     </div>
