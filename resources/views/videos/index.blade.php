@@ -318,7 +318,7 @@
                                         {{ $video->rol_autor }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if($video->evaluado_por_usuario_actual)
+                                        @if($video->evaluado_por_usuario_actual || (auth()->check() && (auth()->user()->rol == 'superadmin')))
                                         {{ number_format($video->puntaje, 1) }}
                                         @else
                                         <span style="filter:blur(3px)">99</span>

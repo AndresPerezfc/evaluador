@@ -236,7 +236,7 @@
                     @endif
                 @endif
 
-                @if (isset($puntajeUsuarioActual))
+                @if (isset($puntajeUsuarioActual) || (auth()->check() && (auth()->user()->rol == 'superadmin')))
                     <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
                         <span class="inline-flex w-6 h-6 justify-center items-center">
                             @if ($otrasEvaluaciones->isEmpty())
@@ -343,7 +343,7 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="p-4 rounded-md shadow-sm">
                                     <h2 class="text-xl font-medium mb-2">Puntaje Actual</h2>
-                                    @if (isset($puntajeUsuarioActual))
+                                    @if (isset($puntajeUsuarioActual) || (auth()->check() && (auth()->user()->rol == 'superadmin')))
                                         @php
                                             $puntaje = $video->puntaje;
                                             $textColorClass = 'text-red-500'; // Valor por defecto
