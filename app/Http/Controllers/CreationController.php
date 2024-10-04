@@ -186,6 +186,9 @@ class CreationController extends Controller
 
         if ($creation->extra_puntos && $creation->puntaje < 100) {
             $creation->puntaje = $creation->puntaje + 10;
+            if($creation->puntaje>100){
+                $creation->puntaje = 100;
+            }
         }
 
         $creation->save();

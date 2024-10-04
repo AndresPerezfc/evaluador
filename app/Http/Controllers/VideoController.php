@@ -175,6 +175,9 @@ class VideoController extends Controller
 
         if ($video->extra_puntos && $video->puntaje < 100) {
             $video->puntaje = $video->puntaje + 10;
+            if($video->puntaje>100){
+                $video->puntaje = 100;
+            }
         }
 
         $video->save();

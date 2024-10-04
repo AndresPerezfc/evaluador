@@ -195,6 +195,9 @@ class InnovationController extends Controller
 
         if ($innovation->extra_puntos && $innovation->puntaje < 100) {
             $innovation->puntaje = $innovation->puntaje + 10;
+            if($innovation->puntaje>100){
+                $innovation->puntaje = 100;
+            }
         }
 
         $innovation->save();
