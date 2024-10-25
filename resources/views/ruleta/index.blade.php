@@ -7,10 +7,10 @@
     <title>Ruleta Innovafest</title>
 
     <link rel="stylesheet" href="{{ asset('css/ruleta.css') }}">
-    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Incluir Lodash desde un CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-    <script src="http://backbonejs.org/backbone.js"></script>
+    <script src="https://backbonejs.org/backbone.js"></script>
     <script src="https://cdn.jsdelivr.net/velocity/1.2.1/velocity.min.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
