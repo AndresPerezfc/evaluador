@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InnovationController;
 use App\Http\Controllers\CreationController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\RuletaController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -24,3 +25,6 @@ Route::middleware([
     Route::resource('creations', CreationController::class);
     Route::resource('videos', VideoController::class);
 });
+
+
+Route::get('/ruleta',  [RuletaController::class, 'index'])->name('ruleta');
