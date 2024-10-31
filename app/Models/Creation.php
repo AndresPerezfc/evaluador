@@ -28,7 +28,8 @@ class Creation extends Model
         'colegio',
         'coautor',
         'puntaje',
-        'comentario_general'
+        'comentario_general',
+        'link_creation',
     ];
 
     public function category()

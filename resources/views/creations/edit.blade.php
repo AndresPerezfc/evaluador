@@ -238,7 +238,7 @@
                     @endif
                 @endif
 
-                @if (isset($puntajeUsuarioActual) || (auth()->check() && (auth()->user()->rol == 'superadmin')))
+                @if (isset($puntajeUsuarioActual) || (auth()->check() && auth()->user()->rol == 'superadmin'))
                     <h2 class="mb-2 text-lg font-semibold text-gray-900" style="margin-top: 20px">
                         <span class="inline-flex w-6 h-6 justify-center items-center">
                             @if ($otrasEvaluaciones->isEmpty())
@@ -340,7 +340,7 @@
                             <div class="grid grid-cols-3 gap-4">
                                 <div class="p-4 rounded-md shadow-sm">
                                     <h2 class="text-xl font-medium mb-2">Puntaje Actual</h2>
-                                    @if (isset($puntajeUsuarioActual) || (auth()->check() && (auth()->user()->rol == 'superadmin')))
+                                    @if (isset($puntajeUsuarioActual) || (auth()->check() && auth()->user()->rol == 'superadmin'))
                                         @php
                                             $puntaje = $creation->puntaje;
                                             $textColorClass = 'text-red-500'; // Valor por defecto
@@ -378,6 +378,10 @@
 
                             <!-- Datos de la Innovación -->
                             <div class="p-4 rounded-md shadow-sm">
+                                <h2 class="mb-2 text-2xl font-medium">Co-Creación</h2>
+                                <p class="mb-4"><a href="{{ $creation->link_creation }}" class="text-blue-500 hover:underline"
+                                        target="_blank">Enlace a la Co-creación</a></p>
+
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
 
                                 @if (!empty($creation->tematica))

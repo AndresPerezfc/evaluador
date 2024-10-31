@@ -325,7 +325,7 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 items-center">
-                                        {{ $creation->evaluaciones_por_usuario }}/3
+                                        {{ $creation->evaluaciones_por_usuario }}/4
                                     </td>
                                     <td class="px-6 py-4 items-center">
                                         @if ($creation->evaluado_por_usuario_actual)
