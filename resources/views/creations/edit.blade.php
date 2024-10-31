@@ -379,8 +379,14 @@
                             <!-- Datos de la Innovación -->
                             <div class="p-4 rounded-md shadow-sm">
                                 <h2 class="mb-2 text-2xl font-medium">Co-Creación</h2>
-                                <p class="mb-4"><a href="{{ $creation->link_creation }}" class="text-blue-500 hover:underline"
-                                        target="_blank">Enlace a la Co-creación</a></p>
+                                @if ($creation->link_creation)
+                                    <p class="mb-4"><a href="{{ $creation->link_creation }}"
+                                            class="text-blue-500 hover:underline" target="_blank">Enlace a la
+                                            Co-creación</a></p>
+                                @else
+                                    <p class="mb-4">No participó en el proceso de Co-creación</p>
+                                @endif
+
 
                                 <h2 class="mb-2 text-2xl font-medium">Datos de la Innovación</h2>
 
