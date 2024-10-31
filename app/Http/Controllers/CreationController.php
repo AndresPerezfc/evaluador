@@ -13,39 +13,47 @@ class CreationController extends Controller
 {
 
     public function index(Request $request)
-    {
-        // Obtener los parámetros de ordenamiento, con valores por defecto
-        $sortBy = $request->query('sort_by', 'id'); // Por defecto, ordena por 'puntaje'
-        $sortDirection = $request->query('sort_direction', 'asc'); // Por defecto, orden descendente
+{
+    // Obtener los parámetros de ordenamiento, con valores por defecto
+    $sortBy1 = $request->query('sort_by1', 'rol_autor'); // Ordenar por rol_autor por defecto
+    $sortDirection1 = $request->query('sort_direction1', 'asc'); // Dirección del primer criterio
+    $sortBy2 = $request->query('sort_by2', 'puntaje'); // Segundo criterio de ordenamiento
+    $sortDirection2 = $request->query('sort_direction2', 'desc'); // Dirección del segundo criterio
 
-        // Validar que el valor de $sortBy sea uno de los permitidos (titulo, innovador, puntaje)
-        if (!in_array($sortBy, ['titulo', 'innovador', 'puntaje', 'rol_autor'])) {
-            $sortBy = 'id';
-        }
-
-        // Validar que la dirección de orden sea válida (asc o desc)
-        if (!in_array($sortDirection, ['asc', 'desc'])) {
-            $sortDirection = 'desc';
-        }
-
-        // Obtener las innovaciones con ordenamiento dinámico
-        $creations = Creation::where('category_id', 2)
-            ->orderBy($sortBy, $sortDirection) // Ordenar según los parámetros de usuario
-            ->get();
-
-        foreach ($creations as $creation) {
-            $creation->evaluaciones_por_usuario = EvaluationCreation::where('creation_id', $creation->id)
-                ->distinct('user_id')
-                ->count('user_id');
-
-            $creation->evaluado_por_usuario_actual = EvaluationCreation::where('creation_id', $creation->id)
-                ->where('user_id', Auth::user()->id)
-                ->exists();
-        }
-
-        // Pasar los datos a la vista, incluyendo sortBy y sortDirection
-        return view('creations.index', compact('creations', 'sortBy', 'sortDirection'));
+    // Validar que los valores de ordenamiento sean válidos
+    $validColumns = ['titulo', 'cocreador', 'puntaje', 'rol_autor'];
+    if (!in_array($sortBy1, $validColumns)) {
+        $sortBy1 = 'rol_autor';
     }
+    if (!in_array($sortDirection1, ['asc', 'desc'])) {
+        $sortDirection1 = 'asc';
+    }
+    if (!in_array($sortBy2, $validColumns)) {
+        $sortBy2 = 'puntaje';
+    }
+    if (!in_array($sortDirection2, ['asc', 'desc'])) {
+        $sortDirection2 = 'desc';
+    }
+
+    // Obtener las creations con el ordenamiento compuesto
+    $creations = Creation::where('category_id', 2)
+        ->orderBy($sortBy1, $sortDirection1)
+        ->orderBy($sortBy2, $sortDirection2)
+        ->get();
+
+    foreach ($creations as $creation) {
+        $creation->evaluaciones_por_usuario = EvaluationCreation::where('creation_id', $creation->id)
+            ->distinct('user_id')
+            ->count('user_id');
+
+        $creation->evaluado_por_usuario_actual = EvaluationCreation::where('creation_id', $creation->id)
+            ->where('user_id', Auth::user()->id)
+            ->exists();
+    }
+
+    // Pasar los datos a la vista, incluyendo los criterios de ordenamiento
+    return view('creations.index', compact('creations', 'sortBy1', 'sortDirection1', 'sortBy2', 'sortDirection2'));
+}
 
 
     public function create()

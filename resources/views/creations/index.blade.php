@@ -231,10 +231,10 @@
                                     #
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'titulo', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('creations.index', ['sort_by1' => 'titulo', 'sort_direction1' => $sortDirection1 === 'asc' ? 'desc' : 'asc', 'sort_by2' => $sortBy2, 'sort_direction2' => $sortDirection2]) }}">
                                         Título
-                                        @if($sortBy == 'titulo')
-                                            @if($sortDirection == 'asc')
+                                        @if($sortBy1 == 'titulo')
+                                            @if($sortDirection1 == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
                                             @else
                                                 <i class="fa-solid fa-arrow-down"></i>
@@ -243,10 +243,10 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'cocreador', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('creations.index', ['sort_by1' => 'cocreador', 'sort_direction1' => $sortDirection1 === 'asc' ? 'desc' : 'asc', 'sort_by2' => $sortBy2, 'sort_direction2' => $sortDirection2]) }}">
                                         Creador
-                                        @if($sortBy == 'cocreador')
-                                            @if($sortDirection == 'asc')
+                                        @if($sortBy1 == 'cocreador')
+                                            @if($sortDirection1 == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
                                             @else
                                                 <i class="fa-solid fa-arrow-down"></i>
@@ -255,10 +255,10 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'rol_autor', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('creations.index', ['sort_by1' => 'rol_autor', 'sort_direction1' => $sortDirection1 === 'asc' ? 'desc' : 'asc', 'sort_by2' => $sortBy2, 'sort_direction2' => $sortDirection2]) }}">
                                         Rol
-                                        @if($sortBy == 'rol_autor')
-                                            @if($sortDirection == 'asc')
+                                        @if($sortBy1 == 'rol_autor')
+                                            @if($sortDirection1 == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
                                             @else
                                                 <i class="fa-solid fa-arrow-down"></i>
@@ -267,10 +267,10 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('creations.index', ['sort_by' => 'puntaje', 'sort_direction' => $sortDirection === 'asc' ? 'desc' : 'asc']) }}">
+                                    <a href="{{ route('creations.index', ['sort_by1' => 'puntaje', 'sort_direction1' => $sortDirection1 === 'asc' ? 'desc' : 'asc', 'sort_by2' => $sortBy2, 'sort_direction2' => $sortDirection2]) }}">
                                         Puntaje
-                                        @if($sortBy == 'puntaje')
-                                            @if($sortDirection == 'asc')
+                                        @if($sortBy1 == 'puntaje')
+                                            @if($sortDirection1 == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
                                             @else
                                                 <i class="fa-solid fa-arrow-down"></i>
