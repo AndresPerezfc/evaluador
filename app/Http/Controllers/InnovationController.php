@@ -17,22 +17,31 @@ class InnovationController extends Controller
     public function index(Request $request)
     {
         // Obtener los parámetros de ordenamiento, con valores por defecto
-        $sortBy = $request->query('sort_by', 'id'); // Por defecto, ordena por 'puntaje'
-        $sortDirection = $request->query('sort_direction', 'asc'); // Por defecto, orden descendente
+        $sortBy1 = $request->query('sort_by1', 'rol_autor'); // Ordenar por rol_autor por defecto
+        $sortDirection1 = $request->query('sort_direction1', 'asc'); // Dirección del primer criterio
+        $sortBy2 = $request->query('sort_by2', 'puntaje'); // Segundo criterio de ordenamiento
+        $sortDirection2 = $request->query('sort_direction2', 'desc'); // Dirección del segundo criterio
 
-        // Validar que el valor de $sortBy sea uno de los permitidos (titulo, innovador, puntaje)
-        if (!in_array($sortBy, ['titulo', 'innovador', 'puntaje', 'rol_autor'])) {
-            $sortBy = 'id';
+        // Validar que los valores de ordenamiento sean válidos
+        $validColumns = ['titulo', 'innovador', 'puntaje', 'rol_autor'];
+        if (!in_array($sortBy1, $validColumns)) {
+            $sortBy1 = 'rol_autor';
+        }
+        if (!in_array($sortDirection1, ['asc', 'desc'])) {
+            $sortDirection1 = 'asc';
+        }
+        if (!in_array($sortBy2, $validColumns)) {
+            $sortBy2 = 'puntaje';
+        }
+        if (!in_array($sortDirection2, ['asc', 'desc'])) {
+            $sortDirection2 = 'desc';
         }
 
-        // Validar que la dirección de orden sea válida (asc o desc)
-        if (!in_array($sortDirection, ['asc', 'desc'])) {
-            $sortDirection = 'desc';
-        }
 
         // Obtener las innovaciones con ordenamiento dinámico
         $innovations = Innovation::whereIn('category_id', [1, 3])
-            ->orderBy($sortBy, $sortDirection) // Ordenar según los parámetros de usuario
+            ->orderBy($sortBy1, $sortDirection1)
+            ->orderBy($sortBy2, $sortDirection2)
             ->get();
 
         foreach ($innovations as $innovation) {
@@ -48,7 +57,7 @@ class InnovationController extends Controller
         }
 
         // Pasar los datos a la vista, incluyendo sortBy y sortDirection
-        return view('innovations.index', compact('innovations', 'sortBy', 'sortDirection'));
+        return view('innovations.index', compact('innovations', 'sortBy1', 'sortDirection1', 'sortBy2', 'sortDirection2'));
     }
 
     /**
@@ -195,7 +204,7 @@ class InnovationController extends Controller
 
         if ($innovation->extra_puntos && $innovation->puntaje < 100) {
             $innovation->puntaje = $innovation->puntaje + 10;
-            if($innovation->puntaje>100){
+            if ($innovation->puntaje > 100) {
                 $innovation->puntaje = 100;
             }
         }
