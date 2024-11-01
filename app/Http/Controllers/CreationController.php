@@ -15,15 +15,15 @@ class CreationController extends Controller
     public function index(Request $request)
 {
     // Obtener los parámetros de ordenamiento, con valores por defecto
-    $sortBy1 = $request->query('sort_by1', 'rol_autor'); // Ordenar por rol_autor por defecto
+    $sortBy1 = $request->query('sort_by1', 'categoria_autor'); // Ordenar por rol_autor por defecto
     $sortDirection1 = $request->query('sort_direction1', 'asc'); // Dirección del primer criterio
     $sortBy2 = $request->query('sort_by2', 'puntaje'); // Segundo criterio de ordenamiento
     $sortDirection2 = $request->query('sort_direction2', 'desc'); // Dirección del segundo criterio
 
     // Validar que los valores de ordenamiento sean válidos
-    $validColumns = ['titulo', 'cocreador', 'puntaje', 'rol_autor'];
+    $validColumns = ['titulo', 'cocreador', 'puntaje', 'categoria_autor'];
     if (!in_array($sortBy1, $validColumns)) {
-        $sortBy1 = 'rol_autor';
+        $sortBy1 = 'categoria_autor';
     }
     if (!in_array($sortDirection1, ['asc', 'desc'])) {
         $sortDirection1 = 'asc';
