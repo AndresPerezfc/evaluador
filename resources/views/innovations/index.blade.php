@@ -255,9 +255,9 @@
                                     </a>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <a href="{{ route('innovations.index', ['sort_by1' => 'rol_autor', 'sort_direction1' => $sortDirection1 === 'asc' ? 'desc' : 'asc', 'sort_by2' => $sortBy2, 'sort_direction2' => $sortDirection2]) }}">
-                                        Rol Autor
-                                        @if($sortBy1 == 'rol_autor')
+                                    <a href="{{ route('innovations.index', ['sort_by1' => 'categoria_autor', 'sort_direction1' => $sortDirection1 === 'asc' ? 'desc' : 'asc', 'sort_by2' => $sortBy2, 'sort_direction2' => $sortDirection2]) }}">
+                                        Categoría
+                                        @if($sortBy1 == 'categoria_autor')
                                             @if($sortDirection1 == 'asc')
                                                 <i class="fa-solid fa-arrow-up"></i>
                                             @else
@@ -265,6 +265,11 @@
                                             @endif
                                         @endif
                                     </a>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <div class="flex items-center">
+                                        Rol
+                                    </div>
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     <a href="{{ route('innovations.index', ['sort_by1' => 'puntaje', 'sort_direction1' => $sortDirection1 === 'asc' ? 'desc' : 'asc', 'sort_by2' => $sortBy2, 'sort_direction2' => $sortDirection2]) }}">
@@ -293,9 +298,7 @@
                                         Extra Puntos
                                     </div>
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    <span class="sr-only">Edit</span>
-                                </th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -315,7 +318,10 @@
                                         {{ $innovation->innovador }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $innovation->rol_autor }}
+                                        {{ $innovation->categoria_autor }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <a href="{{ route('innovations.edit', $innovation->id) }}">{{ $innovation->rol_autor }}</a>
                                     </td>
                                     <td class="px-6 py-4">
                                         @if($innovation->evaluado_por_usuario_actual || (auth()->check() && (auth()->user()->rol == 'superadmin')))
@@ -341,9 +347,7 @@
                                         <i class="fa-solid fa-x" style="color: #d05353;"></i>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('innovations.edit', $innovation->id) }}">Evaluar</a>
-                                    </td>
+                                    
                                 </tr>
                             @endforeach
                         </tbody>
